@@ -12,6 +12,7 @@
     "server:watch": "tsx watch ./server/server.ts",
     "client": "vite",
     "lint": "eslint . --ext .ts",
+    "tsc": "tsc --noEmit",
     "dev": "concurrently \"yarn run codegen:watch\" \"yarn run server:watch\" \"yarn run client\""
   },
   "keywords": [],
