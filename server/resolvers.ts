@@ -14,7 +14,7 @@ export const resolvers: Resolvers = {
     user: (_, { id }) => {
       return users.find((user) => user.id === id) || null;
     },
-    messages: (_) => {
+    messages: () => {
       return messages;
     },
     message: (_, { id }) => {

@@ -1,5 +1,0 @@
-module.exports = {
-  schema: 'schema.graphql',
-  src: 'client/**/*.gql',
-  documents: 'client/**/*.gql',
-};

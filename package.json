@@ -3,14 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "codegen": "graphql-codegen",
     "codegen:watch": "graphql-codegen --watch",
     "server": "tsx ./server/index.ts",
     "server:watch": "tsx watch ./server/index.ts",
+    "client": "vite",
     "lint": "eslint . --ext .ts",
-    "dev": "concurrently \"yarn run codegen:watch\" \"yarn run server:watch\""
+    "dev": "concurrently \"yarn run codegen:watch\" \"yarn run server:watch\" \"yarn run client\""
   },
   "keywords": [],
   "author": "",
@@ -19,6 +21,7 @@
     "graphql": "^16.7.1",
     "graphql-tag": "^2.12.6",
     "graphql-yoga": "^4.0.3",
+    "solid-js": "^1.7.7",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
@@ -30,13 +33,17 @@
     "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "@typescript-eslint/parser": "^5.61.0",
+    "chalk": "^5.3.0",
     "concurrently": "^8.2.0",
     "eslint": "^8.44.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-prettier": "4.0.0",
     "prettier": "2.6.2",
     "prettier-eslint": "15.0.1",
+    "solid-devtools": "^0.27.3",
     "tsx": "^3.12.7",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "vite": "^4.4.1",
+    "vite-plugin-solid": "^2.7.0"
   }
 }
