@@ -8,8 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "codegen": "graphql-codegen",
     "codegen:watch": "graphql-codegen --watch",
-    "server": "tsx ./server/index.ts",
-    "server:watch": "tsx watch ./server/index.ts",
+    "server": "tsx ./server/server.ts",
+    "server:watch": "tsx watch ./server/server.ts",
     "client": "vite",
     "lint": "eslint . --ext .ts",
     "dev": "concurrently \"yarn run codegen:watch\" \"yarn run server:watch\" \"yarn run client\""
