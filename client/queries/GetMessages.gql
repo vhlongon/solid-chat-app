@@ -1,0 +1,9 @@
+query GetMessages {
+  messages {
+    id
+    content
+    user {
+      ...UserFragment
+    }
+  }
+}

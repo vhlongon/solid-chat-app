@@ -1,0 +1,11 @@
+query GetMessage($id: ID!) {
+  message(id: $id) {
+    id
+    content
+    createdAt
+    user {
+      id
+      username
+    }
+  }
+}
