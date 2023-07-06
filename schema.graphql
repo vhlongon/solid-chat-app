@@ -24,3 +24,7 @@ type Mutation {
   deleteMessage(id: ID!): Boolean!
   updateMessage(id: ID!, content: String!): Message!
 }
+
+type Subscription {
+  messages: [Message]!
+}

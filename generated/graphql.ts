@@ -66,6 +66,11 @@ export type QueryUserArgs = {
   id: Scalars['ID']['input'];
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  messages: Array<Maybe<Message>>;
+};
+
 export type User = {
   __typename?: 'User';
   email: Scalars['String']['output'];

@@ -1,14 +1,10 @@
+import { GraphQLError } from 'graphql';
 import { Message, Resolvers, User } from '../generated/resolvers-types';
 import { createMessage, createUser } from './helpers';
+import { publishMessages, subscribeToMessages } from './subscriptions';
 
-const message1 = createMessage('message1 text', createUser({ id: '1' }));
-const message2 = createMessage('message2 text', createUser({ id: '2' }));
-const user1 = createUser({ id: '1', messages: [message1] });
-const user2 = createUser({ id: '2', messages: [message2] });
-
-const messages = [message1, message2];
-
-const users = [user1, user2];
+const users: User[] = [createUser({ id: '1' })];
+const messages: Message[] = [];
 
 export const resolvers: Resolvers = {
   Query: {
@@ -60,37 +56,44 @@ export const resolvers: Resolvers = {
     },
   },
   Mutation: {
-    createMessage: (_, { content, userId }) => {
+    createMessage: (_, { content, userId }, { pubSub }) => {
       const user = users.find((user) => user.id === userId);
 
       if (!user) {
-        throw new Error('User not found');
+        throw new GraphQLError('User not found');
       }
 
       const message = createMessage(content, user);
       messages.push(message);
+      publishMessages(pubSub, messages);
       return message;
     },
-    deleteMessage: (_, { id }) => {
+    deleteMessage: (_, { id }, { pubSub }) => {
       const message = messages.find((message) => message.id === id);
 
       if (message) {
-        // mutate and remove the message from the messages array
         messages.splice(messages.indexOf(message), 1);
+        publishMessages(pubSub, messages);
         return true;
       }
 
       return false;
     },
-    updateMessage: (_, { id, content }) => {
+    updateMessage: (_, { id, content }, { pubSub }) => {
       const message = messages.find((message) => message.id === id);
 
       if (message) {
         message.content = content;
+        publishMessages(pubSub, messages);
         return message;
       }
 
-      throw new Error('Message not found');
+      throw new GraphQLError('Message not found');
+    },
+  },
+  Subscription: {
+    messages: {
+      subscribe: (_, __, { pubSub }) => subscribeToMessages(pubSub),
     },
   },
 };
