@@ -59,4 +59,38 @@ export const resolvers: Resolvers = {
       return parent.__typename === 'Message';
     },
   },
+  Mutation: {
+    createMessage: (_, { content, userId }) => {
+      const user = users.find((user) => user.id === userId);
+
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      const message = createMessage(content, user);
+      messages.push(message);
+      return message;
+    },
+    deleteMessage: (_, { id }) => {
+      const message = messages.find((message) => message.id === id);
+
+      if (message) {
+        // mutate and remove the message from the messages array
+        messages.splice(messages.indexOf(message), 1);
+        return true;
+      }
+
+      return false;
+    },
+    updateMessage: (_, { id, content }) => {
+      const message = messages.find((message) => message.id === id);
+
+      if (message) {
+        message.content = content;
+        return message;
+      }
+
+      throw new Error('Message not found');
+    },
+  },
 };

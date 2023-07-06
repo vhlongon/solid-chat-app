@@ -24,6 +24,30 @@ export type Message = {
   user: User;
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  createMessage: Message;
+  deleteMessage: Scalars['Boolean']['output'];
+  updateMessage: Message;
+};
+
+
+export type MutationCreateMessageArgs = {
+  content: Scalars['String']['input'];
+  userId: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteMessageArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdateMessageArgs = {
+  content: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
   message?: Maybe<Message>;
