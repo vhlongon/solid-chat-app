@@ -20,6 +20,7 @@ const documents = {
     "query GetMessages {\n  messages {\n    id\n    content\n    user {\n      ...UserFragment\n    }\n  }\n}": types.GetMessagesDocument,
     "query GetUser($id: ID!) {\n  user(id: $id) {\n    id\n    username\n    messages {\n      id\n      content\n      createdAt\n    }\n  }\n}": types.GetUserDocument,
     "query GetUsers {\n  users {\n    id\n    username\n    messages {\n      ...MessageFragment\n    }\n  }\n}": types.GetUsersDocument,
+    "subscription Messages {\n  messages {\n    ...MessageFragment\n    user {\n      ...UserFragment\n    }\n  }\n}": types.MessagesDocument,
 };
 
 /**
@@ -64,6 +65,10 @@ export function graphql(source: "query GetUser($id: ID!) {\n  user(id: $id) {\n 
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "query GetUsers {\n  users {\n    id\n    username\n    messages {\n      ...MessageFragment\n    }\n  }\n}"): (typeof documents)["query GetUsers {\n  users {\n    id\n    username\n    messages {\n      ...MessageFragment\n    }\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "subscription Messages {\n  messages {\n    ...MessageFragment\n    user {\n      ...UserFragment\n    }\n  }\n}"): (typeof documents)["subscription Messages {\n  messages {\n    ...MessageFragment\n    user {\n      ...UserFragment\n    }\n  }\n}"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

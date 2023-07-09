@@ -1,0 +1,8 @@
+subscription Messages {
+  messages {
+    ...MessageFragment
+    user {
+      ...UserFragment
+    }
+  }
+}
