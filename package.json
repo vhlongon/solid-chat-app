@@ -19,6 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@urql/core": "^4.0.10",
     "graphql": "^16.7.1",
     "graphql-tag": "^2.12.6",
     "graphql-yoga": "^4.0.3",
