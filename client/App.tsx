@@ -1,59 +1,42 @@
-import { For, createResource, createSignal } from 'solid-js';
-import {
-  CreateMessageDocument,
-  CreateMessageMutation,
-  CreateMessageMutationVariables,
-  GetMessagesDocument,
-} from '../generated/graphql';
-import { client } from './gqlClient';
 import { CombinedError } from '@urql/core';
+import { For, createResource, createSignal } from 'solid-js';
+import { postMessage, fetchMessages } from './data';
+import { Message, MessagesDocument } from '../generated/graphql';
+import { pipe, subscribe } from 'wonka';
+import { client } from './gqlClient';
 
-const fetchMessages = async () => {
-  const res = await client.query(GetMessagesDocument, {});
-  return res.data?.messages;
-};
+const [addedMessages, setAddedMessages] = createSignal<Message[]>([]);
 
-type MutationOptions<T> = {
-  onSuccess: (data: T) => void;
-  onError: (error: Error | CombinedError) => void;
-};
-const createMessage = async (
-  input: CreateMessageMutationVariables,
-  opts?: Partial<MutationOptions<CreateMessageMutation['createMessage']>>
-) => {
-  try {
-    const { data, error } = await client.mutation(CreateMessageDocument, input);
+pipe(
+  client.subscription(MessagesDocument, {}),
+  subscribe((result) => {
+    const messages = (result?.data?.messages ?? []) as Message[];
+    setAddedMessages(messages);
+  })
+);
 
-    if (error) {
-      throw error;
-    }
-
-    const createdMessage = data?.createMessage;
-
-    if (createdMessage) {
-      opts?.onSuccess?.(createdMessage);
-    }
-
-    return data?.createMessage;
-  } catch (error) {
-    opts?.onError?.(error as Error | CombinedError);
-  }
-};
 export const App = () => {
-  const [content, setContent] = createSignal('');
-  const [messages, { refetch }] = createResource(fetchMessages);
+  const [newMessage, setNewMessage] = createSignal('');
   const [errors, setErrors] = createSignal<Error | CombinedError | null>(null);
+  const [initialMessages] = createResource(
+    fetchMessages({
+      onError: setErrors,
+    })
+  );
+
+  const messages = () => {
+    return addedMessages()?.length ? addedMessages() : initialMessages();
+  };
 
   const onClick = async () => {
-    createMessage(
+    postMessage(
       {
-        content: content(),
+        content: newMessage(),
         userId: '1',
       },
       {
         onSuccess: () => {
-          refetch();
-          setContent('');
+          setNewMessage('');
         },
         onError: setErrors,
       }
@@ -69,8 +52,8 @@ export const App = () => {
       <div>
         <input
           type="text"
-          value={content()}
-          oninput={(e) => setContent(e.currentTarget.value)}
+          value={newMessage()}
+          oninput={(e) => setNewMessage(e.currentTarget.value)}
         />
         <button type="button" onclick={onClick}>
           Send
