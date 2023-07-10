@@ -1,8 +1,10 @@
 import { CombinedError } from '@urql/core';
 import { For, createResource, createSignal } from 'solid-js';
-import { postMessage, fetchMessages } from './data';
-import { Message, MessagesDocument } from '../generated/graphql';
 import { pipe, subscribe } from 'wonka';
+import { Message, MessagesDocument } from '../generated/graphql';
+import { MessageInput } from './components/MessageInput';
+import { NewMessageInput } from './components/NewMessageInput';
+import { fetchMessages } from './data';
 import { client } from './gqlClient';
 
 const [addedMessages, setAddedMessages] = createSignal<Message[]>([]);
@@ -16,7 +18,6 @@ pipe(
 );
 
 export const App = () => {
-  const [newMessage, setNewMessage] = createSignal('');
   const [errors, setErrors] = createSignal<Error | CombinedError | null>(null);
   const [initialMessages] = createResource(
     fetchMessages({
@@ -28,36 +29,18 @@ export const App = () => {
     return addedMessages()?.length ? addedMessages() : initialMessages();
   };
 
-  const onClick = async () => {
-    postMessage(
-      {
-        content: newMessage(),
-        userId: '1',
-      },
-      {
-        onSuccess: () => {
-          setNewMessage('');
-        },
-        onError: setErrors,
-      }
-    );
-  };
-
   return (
     <div>
       <div>
-        <For each={messages()}>{({ content }) => <div>{content}</div>}</For>
+        <For each={messages()}>
+          {({ content, id }) => (
+            <MessageInput content={content} id={id} onError={setErrors} />
+          )}
+        </For>
       </div>
 
       <div>
-        <input
-          type="text"
-          value={newMessage()}
-          oninput={(e) => setNewMessage(e.currentTarget.value)}
-        />
-        <button type="button" onclick={onClick}>
-          Send
-        </button>
+        <NewMessageInput onError={setErrors} />
       </div>
       {errors() && <div>{errors?.()?.message}</div>}
     </div>
