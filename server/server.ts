@@ -4,13 +4,25 @@ import { createPubSub, createYoga } from 'graphql-yoga';
 import { createServer } from 'node:http';
 import { Socket } from 'node:net';
 import { WebSocketServer } from 'ws';
+import { getTokenFromHeaders, getUserIdFromToken } from './auth';
 import { schema } from './schema';
 
 export const pubSub = createPubSub();
 
 const yoga = createYoga({
   schema,
-  context: { pubSub },
+  context: (c) => {
+    const auth = getTokenFromHeaders(c.request?.headers);
+
+    if (!auth) {
+      return { pubSub, userId: null };
+    }
+
+    return {
+      pubSub,
+      userId: getUserIdFromToken(auth),
+    };
+  },
 });
 const server = createServer(yoga);
 

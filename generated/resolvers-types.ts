@@ -51,6 +51,7 @@ export type MutationUpdateMessageArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  me: Maybe<User>;
   message: Maybe<Message>;
   messages: Maybe<Array<Message>>;
   user: Maybe<User>;
@@ -188,6 +189,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
 };
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  me: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   message: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, RequireFields<QueryMessageArgs, 'id'>>;
   messages: Resolver<Maybe<Array<ResolversTypes['Message']>>, ParentType, ContextType>;
   user: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;

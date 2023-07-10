@@ -1,3 +1,4 @@
+import { GraphQLError } from 'graphql';
 import { Resolvers } from '../../../generated/resolvers-types';
 import { messagesData } from '../../data';
 import { publishMessages } from '../../subscriptions';
@@ -5,15 +6,20 @@ import { publishMessages } from '../../subscriptions';
 export const deleteMessage: Resolvers['Mutation']['deleteMessage'] = (
   _,
   { id },
-  { pubSub }
+  { pubSub, userId }
 ) => {
-  const message = messagesData.find((message) => message.id === id);
+  if (!userId) {
+    throw new GraphQLError('Not authenticated');
+  }
 
-  if (message) {
+  const message = messagesData.find((message) => message.id === id);
+  const isOwner = message?.user.id === userId;
+
+  if (isOwner) {
     messagesData.splice(messagesData.indexOf(message), 1);
     publishMessages(pubSub, messagesData);
     return true;
   }
 
-  return false;
+  throw new GraphQLError('Cannot delete message');
 };

@@ -8,3 +8,14 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      JWT_SECRET: string;
+      PORT: string;
+    }
+  }
+}
+
+export {};

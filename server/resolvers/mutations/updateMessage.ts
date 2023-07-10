@@ -6,15 +6,20 @@ import { publishMessages } from '../../subscriptions';
 export const updateMessage: Resolvers['Mutation']['updateMessage'] = (
   _,
   { id, content },
-  { pubSub }
+  { pubSub, userId }
 ) => {
-  const message = messagesData.find((message) => message.id === id);
+  if (!userId) {
+    throw new GraphQLError('Not authenticated');
+  }
 
-  if (message) {
+  const message = messagesData.find((message) => message.id === id);
+  const isOwner = message?.user.id === userId;
+
+  if (isOwner) {
     message.content = content;
     publishMessages(pubSub, messagesData);
     return message;
   }
 
-  throw new GraphQLError('Message not found');
+  throw new GraphQLError('Cannot update message');
 };

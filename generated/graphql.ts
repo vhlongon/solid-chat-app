@@ -50,6 +50,7 @@ export type MutationUpdateMessageArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  me?: Maybe<User>;
   message?: Maybe<Message>;
   messages?: Maybe<Array<Message>>;
   user?: Maybe<User>;

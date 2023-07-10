@@ -6,13 +6,17 @@ import { publishMessages } from '../../subscriptions';
 
 export const createMessage: Resolvers['Mutation']['createMessage'] = (
   _,
-  { content, userId },
-  { pubSub }
+  { content },
+  { pubSub, userId }
 ) => {
+  if (!userId) {
+    throw new GraphQLError('Not authenticated');
+  }
+
   const user = usersData.find((user) => user.id === userId);
 
   if (!user) {
-    throw new GraphQLError('User not found');
+    throw new GraphQLError('Not authenticated');
   }
 
   const message = createMessageHelper(content, user);

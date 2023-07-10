@@ -8,6 +8,7 @@ import { message } from './resolvers/queries/message';
 import { messages } from './resolvers/queries/messages';
 import { user } from './resolvers/queries/user';
 import { users } from './resolvers/queries/users';
+import { me } from './resolvers/queries/me';
 import { messagesSubscription } from './resolvers/subscriptions/messagesSubscription';
 
 export const resolvers: Resolvers = {
@@ -16,6 +17,7 @@ export const resolvers: Resolvers = {
     user,
     messages,
     message,
+    me,
   },
   User: UserModel,
   Message: MessageModel,
