@@ -3,7 +3,7 @@ query GetMessage($id: ID!) {
     id
     content
     createdAt
-    user {
+    author {
       id
       username
     }

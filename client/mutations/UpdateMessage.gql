@@ -1,8 +1,8 @@
 mutation UpdateMessage($id: ID!, $content: String!) {
   updateMessage(id: $id, content: $content) {
     id
-    user {
-      username
+    author {
+      ...UserFragment
     }
     content
   }

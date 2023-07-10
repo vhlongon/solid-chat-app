@@ -2,4 +2,5 @@ fragment MessageFragment on Message {
   id
   content
   createdAt
+  isOwner
 }

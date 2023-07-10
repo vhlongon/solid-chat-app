@@ -2,7 +2,8 @@ query GetMessages {
   messages {
     id
     content
-    user {
+    createdAt
+    author {
       ...UserFragment
     }
   }

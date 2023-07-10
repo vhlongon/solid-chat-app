@@ -1,0 +1,9 @@
+mutation Authenticate($accessToken: String!) {
+  authenticate(accessCode: $accessToken) {
+    token
+    user {
+      id
+      username
+    }
+  }
+}

@@ -1,0 +1,5 @@
+mutation VerifyAuth($token: String!) {
+  verifyAuth(token: $token) {
+    ...UserFragment
+  }
+}
