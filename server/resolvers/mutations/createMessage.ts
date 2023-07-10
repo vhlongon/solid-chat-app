@@ -19,7 +19,8 @@ export const createMessage: Resolvers['Mutation']['createMessage'] = (
     throw new GraphQLError('Not authenticated');
   }
 
-  const message = createMessageHelper(content, user);
+  const message = createMessageHelper({ content, author: user, isOwner: true });
+
   messagesData.push(message);
   publishMessages(pubSub, messagesData);
   return message;

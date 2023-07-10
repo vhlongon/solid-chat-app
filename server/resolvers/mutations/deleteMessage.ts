@@ -13,7 +13,7 @@ export const deleteMessage: Resolvers['Mutation']['deleteMessage'] = (
   }
 
   const message = messagesData.find((message) => message.id === id);
-  const isOwner = message?.user.id === userId;
+  const isOwner = message?.author.id === userId;
 
   if (isOwner) {
     messagesData.splice(messagesData.indexOf(message), 1);

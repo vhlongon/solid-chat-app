@@ -5,7 +5,7 @@ import { JWTPayload } from './types';
 const secret = process.env.JWT_SECRET;
 
 export const getTokenFromHeaders = (headers: Headers) => {
-  const auth = headers?.get('authorization');
+  const auth = headers?.get('Authorization');
   const token = auth?.replace('Bearer ', '');
   return token;
 };

@@ -2,13 +2,18 @@ import { v4 as uuidv4 } from 'uuid';
 import { Message, User } from '../generated/resolvers-types';
 import { PubSub } from './types';
 
-export const createMessage = (content: string, user: User): Message => {
+export const createMessage = ({
+  content,
+  author,
+  isOwner,
+}: Pick<Message, 'content' | 'author' | 'isOwner'>): Message => {
   return {
     id: uuidv4(),
     content,
     createdAt: new Date().toISOString(),
-    user,
+    author,
     __typename: 'Message',
+    isOwner,
   };
 };
 

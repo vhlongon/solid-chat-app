@@ -17,19 +17,33 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type AuthPayload = {
+  __typename?: 'AuthPayload';
+  token: Maybe<Scalars['String']['output']>;
+  user: Maybe<User>;
+};
+
 export type Message = {
   __typename?: 'Message';
+  author: User;
   content: Scalars['String']['output'];
   createdAt: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  user: User;
+  isOwner: Scalars['Boolean']['output'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
+  authenticate: Maybe<AuthPayload>;
   createMessage: Message;
   deleteMessage: Scalars['Boolean']['output'];
   updateMessage: Message;
+  verifyAuth: Maybe<User>;
+};
+
+
+export type MutationAuthenticateArgs = {
+  accessCode: Scalars['String']['input'];
 };
 
 
@@ -49,8 +63,14 @@ export type MutationUpdateMessageArgs = {
   id: Scalars['ID']['input'];
 };
 
+
+export type MutationVerifyAuthArgs = {
+  token: Scalars['String']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
+  authUrl: Maybe<Scalars['String']['output']>;
   me: Maybe<User>;
   message: Maybe<Message>;
   messages: Maybe<Array<Message>>;
@@ -152,6 +172,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  AuthPayload: ResolverTypeWrapper<AuthPayload>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Message: ResolverTypeWrapper<Message>;
@@ -164,6 +185,7 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  AuthPayload: AuthPayload;
   Boolean: Scalars['Boolean']['output'];
   ID: Scalars['ID']['output'];
   Message: Message;
@@ -174,21 +196,31 @@ export type ResolversParentTypes = {
   User: User;
 };
 
+export type AuthPayloadResolvers<ContextType = Context, ParentType extends ResolversParentTypes['AuthPayload'] = ResolversParentTypes['AuthPayload']> = {
+  token: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  user: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MessageResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']> = {
+  author: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   content: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  user: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  isOwner: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  authenticate: Resolver<Maybe<ResolversTypes['AuthPayload']>, ParentType, ContextType, RequireFields<MutationAuthenticateArgs, 'accessCode'>>;
   createMessage: Resolver<ResolversTypes['Message'], ParentType, ContextType, RequireFields<MutationCreateMessageArgs, 'content' | 'userId'>>;
   deleteMessage: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteMessageArgs, 'id'>>;
   updateMessage: Resolver<ResolversTypes['Message'], ParentType, ContextType, RequireFields<MutationUpdateMessageArgs, 'content' | 'id'>>;
+  verifyAuth: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationVerifyAuthArgs, 'token'>>;
 };
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  authUrl: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   me: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   message: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, RequireFields<QueryMessageArgs, 'id'>>;
   messages: Resolver<Maybe<Array<ResolversTypes['Message']>>, ParentType, ContextType>;
@@ -209,6 +241,7 @@ export type UserResolvers<ContextType = Context, ParentType extends ResolversPar
 };
 
 export type Resolvers<ContextType = Context> = {
+  AuthPayload: AuthPayloadResolvers<ContextType>;
   Message: MessageResolvers<ContextType>;
   Mutation: MutationResolvers<ContextType>;
   Query: QueryResolvers<ContextType>;

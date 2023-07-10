@@ -4,5 +4,6 @@ export const MessageModel: Resolvers['Message'] = {
   content: (message) => message.content,
   createdAt: (message) => message.createdAt,
   id: (message) => message.id,
-  user: (message) => message.user,
+  author: (message) => message.author,
+  isOwner: (message, args, context) => message.author.id === context.userId,
 };

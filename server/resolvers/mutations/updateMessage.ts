@@ -13,7 +13,7 @@ export const updateMessage: Resolvers['Mutation']['updateMessage'] = (
   }
 
   const message = messagesData.find((message) => message.id === id);
-  const isOwner = message?.user.id === userId;
+  const isOwner = message?.author.id === userId;
 
   if (isOwner) {
     message.content = content;

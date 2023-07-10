@@ -8,8 +8,9 @@ type User {
 type Message {
   id: ID!
   content: String!
-  user: User!
+  author: User!
   createdAt: String!
+  isOwner: Boolean!
 }
 
 type Query {
@@ -18,12 +19,20 @@ type Query {
   messages: [Message!]
   message(id: ID!): Message
   me: User
+  authUrl: String
+}
+
+type AuthPayload {
+  token: String
+  user: User
 }
 
 type Mutation {
   createMessage(content: String!, userId: ID!): Message!
   deleteMessage(id: ID!): Boolean!
   updateMessage(id: ID!, content: String!): Message!
+  authenticate(accessCode: String!): AuthPayload
+  verifyAuth(token: String!): User
 }
 
 type Subscription {
