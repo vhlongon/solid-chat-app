@@ -12,6 +12,16 @@ const wsClient = createWSClient({
 
 export const client = createClient({
   url: import.meta.env.VITE_GRAPHQL_ENDPOINT,
+  fetchOptions: () => {
+    const authToken = sessionStorage.getItem('authToken');
+    return {
+      headers: {
+        Authorization: authToken
+          ? `Bearer ${sessionStorage.getItem('authToken')}`
+          : '',
+      },
+    };
+  },
   exchanges: [
     cacheExchange,
     fetchExchange,

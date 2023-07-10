@@ -1,15 +1,24 @@
 import { CombinedError } from '@urql/core';
+import { DocumentNode } from 'graphql';
 import {
+  AuthenticateDocument,
+  AuthenticateMutation,
   CreateMessageDocument,
   CreateMessageMutation,
   CreateMessageMutationVariables,
   DeleteMessageDocument,
   DeleteMessageMutation,
+  GetAuthUrlDocument,
+  GetAuthUrlQuery,
   GetMessagesDocument,
   GetMessagesQuery,
+  MeDocument,
+  MeQuery,
   UpdateMessageDocument,
   UpdateMessageMutation,
   UpdateMessageMutationVariables,
+  VerifyAuthDocument,
+  VerifyAuthMutation,
 } from '../generated/graphql';
 import { client } from './gqlClient';
 import { OperationOptions } from './types';
@@ -98,6 +107,81 @@ export const deleteMessage = async (
     }
 
     return data?.deleteMessage;
+  } catch (error) {
+    opts?.onError?.(error as Error | CombinedError);
+  }
+};
+
+export const getAuthUrl = async (
+  opts?: Partial<OperationOptions<GetAuthUrlQuery['authUrl']>>
+) => {
+  try {
+    const { data, error } = await client.query(GetAuthUrlDocument, {});
+
+    if (error) {
+      throw error;
+    }
+
+    return data?.authUrl;
+  } catch (error) {
+    opts?.onError?.(error as Error | CombinedError);
+  }
+};
+
+export const authenticateUser = async (
+  accessToken: string,
+  opts?: Partial<OperationOptions<AuthenticateMutation['authenticate']>>
+) => {
+  try {
+    const { data, error } = await client.mutation(AuthenticateDocument, {
+      accessToken,
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    const authenticatedUser = data?.authenticate;
+
+    if (authenticatedUser) {
+      opts?.onSuccess?.(authenticatedUser);
+    }
+
+    return data?.authenticate;
+  } catch (error) {
+    opts?.onError?.(error as Error | CombinedError);
+  }
+};
+
+export const getMe =
+  (opts?: Partial<OperationOptions<MeQuery['me']>>) => async () => {
+    try {
+      const { data, error } = await client.query(MeDocument, {});
+
+      if (error) {
+        throw error;
+      }
+
+      return data?.me;
+    } catch (error) {
+      opts?.onError?.(error as Error | CombinedError);
+    }
+  };
+
+export const getAuthVefication = async (
+  token: string,
+  opts?: Partial<OperationOptions<VerifyAuthMutation['verifyAuth']>>
+) => {
+  try {
+    const { data, error } = await client.mutation(VerifyAuthDocument, {
+      token,
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    return data?.verifyAuth;
   } catch (error) {
     opts?.onError?.(error as Error | CombinedError);
   }

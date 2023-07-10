@@ -1,9 +1,16 @@
 import { createSignal } from 'solid-js';
-import { Message } from '../../generated/graphql';
+import {
+  GetMessagesQuery,
+  UserFragmentFragment,
+} from '../../generated/graphql';
 import { deleteMessage, editMessage } from '../data';
 import { OperationOptions } from '../types';
 
-type Props = Partial<OperationOptions> & Pick<Message, 'id' | 'content'>;
+type ExcludeNullAndUndefined<T> = Exclude<T, null | undefined>;
+
+type Props = ExcludeNullAndUndefined<GetMessagesQuery['messages']>[number] & {
+  meId: string;
+} & Partial<OperationOptions>;
 
 export const MessageInput = (props: Props) => {
   const [value, setValue] = createSignal(props.content);
@@ -31,10 +38,15 @@ export const MessageInput = (props: Props) => {
     });
   };
 
+  const isOwnMessage = () =>
+    (props.author as UserFragmentFragment).id === props.meId;
+
   return (
     <div>
       <input
         style={{
+          background: isOwnMessage() ? 'white' : '#e8e8e8',
+          color: isOwnMessage() ? 'black' : 'grey',
           border: isActive() ? '1px solid grey' : 'none',
           outline: 'none',
         }}
@@ -43,10 +55,18 @@ export const MessageInput = (props: Props) => {
         oninput={(e) => setValue(e.currentTarget.value)}
         onfocus={onFocus}
       />
-      <button type="button" onClick={onEdit(props.id)}>
+      <button
+        type="button"
+        onClick={onEdit(props.id)}
+        disabled={!isOwnMessage() || props.content === value()}
+      >
         edit
       </button>
-      <button type="button" onClick={onDelete(props.id)}>
+      <button
+        type="button"
+        onClick={onDelete(props.id)}
+        disabled={!isOwnMessage()}
+      >
         delete
       </button>
     </div>
