@@ -29,3 +29,9 @@ To get a client ID and secret ID from a GitHub OAuth app, you need to follow the
 5. Once you have filled out the form, click on the "Register application" button.
 6. On the next page, you will see your client ID and client secret. Make sure to keep these values secret, as they are used to authenticate your app with GitHub.
 7. You can now use these values to authenticate your app with GitHub. Copy those and add them to your `.env` file.
+
+The chat session is held in memory only (no database is used). This means that if you restart the server, all chat messages will be lost.
+
+### TODO
+
+- [ ] Add a database to store chat messages
