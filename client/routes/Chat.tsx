@@ -3,6 +3,7 @@ import { CombinedError } from '@urql/core';
 import { For, createEffect, createResource, createSignal } from 'solid-js';
 import { pipe, subscribe } from 'wonka';
 import { Message, MessagesDocument } from '../../generated/graphql';
+import { ErrrorBox } from '../components/ErrrorBox';
 import { Header } from '../components/Header';
 import { MessageInput } from '../components/MessageInput';
 import { NewMessageInput } from '../components/NewMessageInput';
@@ -65,8 +66,8 @@ const Chat = () => {
               <NewMessageInput onError={setError} />
             </div>
           </div>
+          <ErrrorBox message={error()?.message} />
         </div>
-        {error() ? <div>{error()?.message}</div> : null}
       </div>
     </div>
   );

@@ -20,6 +20,7 @@ const yoga = createYoga({
 
     return {
       pubSub,
+
       userId: getUserIdFromToken(auth),
     };
   },

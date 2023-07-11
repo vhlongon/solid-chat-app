@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js';
+import { Show, createSignal } from 'solid-js';
 import {
   GetMessagesQuery,
   UserFragmentFragment,
@@ -79,7 +79,7 @@ export const MessageInput = (props: Props) => {
           >
             {formatDate(props.createdAt)}
           </span>
-          {isOwnMessage() && (
+          <Show when={isOwnMessage()}>
             <div class="flex gap-2 items-center">
               <button
                 type="button"
@@ -125,7 +125,7 @@ export const MessageInput = (props: Props) => {
                 </svg>
               </button>
             </div>
-          )}
+          </Show>
         </div>
       </div>
     </div>

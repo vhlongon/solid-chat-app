@@ -10,7 +10,7 @@ export const NewMessageInput = (props: Props) => {
     postMessage(
       {
         content: newMessage(),
-        userId: '1', //tODO: get from auth
+        userId: '',
       },
       {
         onSuccess: (data) => {

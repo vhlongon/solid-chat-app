@@ -1,6 +1,7 @@
 import { useNavigate, useSearchParams } from '@solidjs/router';
 import { CombinedError } from '@urql/core';
 import { createEffect, createSignal } from 'solid-js';
+import { ErrrorBox } from '../components/ErrrorBox';
 import { authenticateUser, getAuthUrl } from '../data';
 
 export const Login = () => {
@@ -51,8 +52,8 @@ export const Login = () => {
             </button>
           </div>
         </div>
+        <ErrrorBox message={errors()?.message} />
       </div>
-      {errors() && <div>{errors?.()?.message}</div>}
     </div>
   );
 };
