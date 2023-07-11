@@ -29,7 +29,7 @@ type AuthPayload {
 }
 
 type Mutation {
-  createMessage(content: String!, userId: ID!): Message!
+  createMessage(content: String!): Message!
   deleteMessage(id: ID!): Boolean!
   updateMessage(id: ID!, content: String!): Message!
   authenticate(accessCode: String!): AuthPayload

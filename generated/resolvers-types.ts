@@ -49,7 +49,6 @@ export type MutationAuthenticateArgs = {
 
 export type MutationCreateMessageArgs = {
   content: Scalars['String']['input'];
-  userId: Scalars['ID']['input'];
 };
 
 
@@ -214,7 +213,7 @@ export type MessageResolvers<ContextType = Context, ParentType extends Resolvers
 
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   authenticate: Resolver<Maybe<ResolversTypes['AuthPayload']>, ParentType, ContextType, RequireFields<MutationAuthenticateArgs, 'accessCode'>>;
-  createMessage: Resolver<ResolversTypes['Message'], ParentType, ContextType, RequireFields<MutationCreateMessageArgs, 'content' | 'userId'>>;
+  createMessage: Resolver<ResolversTypes['Message'], ParentType, ContextType, RequireFields<MutationCreateMessageArgs, 'content'>>;
   deleteMessage: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteMessageArgs, 'id'>>;
   updateMessage: Resolver<ResolversTypes['Message'], ParentType, ContextType, RequireFields<MutationUpdateMessageArgs, 'content' | 'id'>>;
   verifyAuth: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationVerifyAuthArgs, 'token'>>;

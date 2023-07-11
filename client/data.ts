@@ -1,5 +1,4 @@
 import { CombinedError } from '@urql/core';
-import { DocumentNode } from 'graphql';
 import {
   AuthenticateDocument,
   AuthenticateMutation,

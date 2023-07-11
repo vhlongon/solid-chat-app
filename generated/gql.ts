@@ -16,7 +16,7 @@ const documents = {
     "fragment MessageFragment on Message {\n  id\n  content\n  createdAt\n  isOwner\n}": types.MessageFragmentFragmentDoc,
     "fragment UserFragment on User {\n  id\n  username\n  email\n  imageUrl\n}": types.UserFragmentFragmentDoc,
     "mutation Authenticate($accessToken: String!) {\n  authenticate(accessCode: $accessToken) {\n    token\n    user {\n      id\n      username\n    }\n  }\n}": types.AuthenticateDocument,
-    "mutation CreateMessage($content: String!, $userId: ID!) {\n  createMessage(content: $content, userId: $userId) {\n    id\n    content\n    createdAt\n  }\n}": types.CreateMessageDocument,
+    "mutation CreateMessage($content: String!) {\n  createMessage(content: $content) {\n    id\n    content\n    createdAt\n  }\n}": types.CreateMessageDocument,
     "mutation DeleteMessage($id: ID!) {\n  deleteMessage(id: $id)\n}": types.DeleteMessageDocument,
     "query Me {\n  me {\n    id\n    username\n    email\n    imageUrl\n  }\n}": types.MeDocument,
     "mutation UpdateMessage($id: ID!, $content: String!) {\n  updateMessage(id: $id, content: $content) {\n    id\n    author {\n      ...UserFragment\n    }\n    content\n  }\n}": types.UpdateMessageDocument,
@@ -58,7 +58,7 @@ export function graphql(source: "mutation Authenticate($accessToken: String!) {\
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "mutation CreateMessage($content: String!, $userId: ID!) {\n  createMessage(content: $content, userId: $userId) {\n    id\n    content\n    createdAt\n  }\n}"): (typeof documents)["mutation CreateMessage($content: String!, $userId: ID!) {\n  createMessage(content: $content, userId: $userId) {\n    id\n    content\n    createdAt\n  }\n}"];
+export function graphql(source: "mutation CreateMessage($content: String!) {\n  createMessage(content: $content) {\n    id\n    content\n    createdAt\n  }\n}"): (typeof documents)["mutation CreateMessage($content: String!) {\n  createMessage(content: $content) {\n    id\n    content\n    createdAt\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

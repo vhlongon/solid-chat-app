@@ -1,5 +1,5 @@
-mutation CreateMessage($content: String!, $userId: ID!) {
-  createMessage(content: $content, userId: $userId) {
+mutation CreateMessage($content: String!) {
+  createMessage(content: $content) {
     id
     content
     createdAt

@@ -10,7 +10,6 @@ export const NewMessageInput = (props: Props) => {
     postMessage(
       {
         content: newMessage(),
-        userId: '',
       },
       {
         onSuccess: (data) => {
