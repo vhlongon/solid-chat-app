@@ -23,13 +23,14 @@ export const NewMessageInput = (props: Props) => {
   };
 
   return (
-    <div>
-      <input
-        type="text"
+    <div class="flex items-center justify-center w-full mt-2">
+      <textarea
+        rows={1}
         value={newMessage()}
         oninput={(e) => setNewMessage(e.currentTarget.value)}
+        class="textarea textarea-ghost-primary max-w-none"
       />
-      <button type="button" onclick={addMessage}>
+      <button type="button" class="btn btn-primary" onclick={addMessage}>
         Send
       </button>
     </div>

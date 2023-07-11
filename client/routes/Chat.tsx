@@ -32,30 +32,37 @@ const Chat = () => {
   };
 
   return (
-    <div>
-      <Header
-        isLoggedIn={Boolean(me()?.username)}
-        username={me()?.username ?? ''}
-      />
-      <div>
-        <For each={messages()}>
-          {({ content, id, author, createdAt }) => (
-            <MessageInput
-              content={content}
-              createdAt={createdAt}
-              id={id}
-              author={author}
-              onError={setError}
-              meId={me()?.id ?? ''}
-            />
-          )}
-        </For>
+    <div class="flex flex-col h-screen">
+      <div class="h-14">
+        <Header
+          isLoggedIn={Boolean(me()?.username)}
+          username={me()?.username ?? ''}
+        />
       </div>
-
-      <div>
-        <NewMessageInput onError={setError} />
+      <div class="flex-grow flex flex-col justify-center items-center">
+        <div class="card min-w-[600px]">
+          <div class="card-body">
+            <div class="flex flex-col gap-3">
+              <For each={messages()}>
+                {({ content, id, author, createdAt }) => (
+                  <MessageInput
+                    content={content}
+                    createdAt={createdAt}
+                    id={id}
+                    author={author}
+                    onError={setError}
+                    meId={me()?.id ?? ''}
+                  />
+                )}
+              </For>
+            </div>
+            <div class="card-footer">
+              <NewMessageInput onError={setError} />
+            </div>
+          </div>
+        </div>
+        {error() ? <div>{error()?.message}</div> : null}
       </div>
-      {error() ? <div>{error()?.message}</div> : null}
     </div>
   );
 };

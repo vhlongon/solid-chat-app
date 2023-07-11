@@ -38,9 +38,19 @@ export const Login = () => {
     navigate(authUrl);
   };
   return (
-    <div>
-      <div>
-        <button onclick={onLogin}>Login</button>
+    <div class="h-screen w-screen flex justify-center items-center">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-header">Login with github to chat</h2>
+          <p class="text-content2">
+            It will only access your public information
+          </p>
+          <div class="card-footer">
+            <button onclick={onLogin} class="btn btn-secondary bt-lg">
+              Login
+            </button>
+          </div>
+        </div>
       </div>
       {errors() && <div>{errors?.()?.message}</div>}
     </div>

@@ -12,11 +12,13 @@ export const Header = (props: HeaderProps) => {
   return (
     <div>
       {props.isLoggedIn ? (
-        <div>
-          user: {props.username}
-          <button type="button" onclick={logout}>
-            logout
-          </button>
+        <div class="navbar">
+          <div class="nav-start">{props.username}</div>
+          <div class="navbar-end">
+            <button type="button" class="btn btn-error btn-sm" onclick={logout}>
+              logout
+            </button>
+          </div>
         </div>
       ) : null}
     </div>
