@@ -36,10 +36,18 @@ export const MessageInput = (props: Props) => {
     });
   };
 
+  console.log(props.createdAt);
+
   const formatDate = (date: string) => {
-    return new Intl.DateTimeFormat('en-GB', {
-      dateStyle: 'short',
-    }).format(new Date(date));
+    const formattedTime = new Date(date).toLocaleString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+    return formattedTime;
   };
 
   return (
