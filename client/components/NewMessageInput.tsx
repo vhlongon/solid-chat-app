@@ -23,7 +23,7 @@ export const NewMessageInput = (props: Props) => {
   };
 
   return (
-    <div class="flex items-center justify-center w-full mt-2">
+    <div class="flex items-center justify-center w-full mt-2 gap-2">
       <textarea
         rows={1}
         value={newMessage()}

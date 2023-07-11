@@ -5,4 +5,5 @@ export const UserModel: Resolvers['User'] = {
   id: (user) => user.id,
   messages: (user) => user.messages,
   username: (user) => user.username,
+  imageUrl: (user) => user.imageUrl,
 };

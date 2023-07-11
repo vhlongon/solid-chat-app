@@ -17,6 +17,7 @@ export const deleteMessage: Resolvers['Mutation']['deleteMessage'] = (
 
   if (isOwner) {
     messagesData.splice(messagesData.indexOf(message), 1);
+
     publishMessages(pubSub, messagesData);
     return true;
   }

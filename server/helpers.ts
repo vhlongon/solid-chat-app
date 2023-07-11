@@ -21,12 +21,14 @@ export const createUser = ({
   id = uuidv4(),
   username = `${id}-username`,
   email = `${username}@test.com`,
+  imageUrl = 'https://via.placeholder.com/150',
   messages,
 }: Partial<User>): User => {
   return {
     id,
     username,
     email,
+    imageUrl,
     messages: messages || [],
     __typename: 'User',
   };

@@ -33,6 +33,7 @@ export const authenticate: Resolvers['Mutation']['authenticate'] = async (
         id: String(githubUser.id),
         username: githubUser.login,
         email: githubUser.email,
+        imageUrl: githubUser.avatar_url,
       });
       usersData.push(user);
     } else {

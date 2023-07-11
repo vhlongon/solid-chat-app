@@ -97,6 +97,7 @@ export type User = {
   __typename?: 'User';
   email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
+  imageUrl: Scalars['String']['output'];
   messages: Maybe<Array<Message>>;
   username: Scalars['String']['output'];
 };
@@ -235,6 +236,7 @@ export type SubscriptionResolvers<ContextType = Context, ParentType extends Reso
 export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   email: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  imageUrl: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   messages: Resolver<Maybe<Array<ResolversTypes['Message']>>, ParentType, ContextType>;
   username: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

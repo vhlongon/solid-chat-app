@@ -27,6 +27,7 @@ const Chat = () => {
       onError: setError,
     })
   );
+  console.log(addedMessages());
   const messages = () => {
     return addedMessages()?.length ? addedMessages() : initialMessages();
   };
@@ -37,13 +38,17 @@ const Chat = () => {
         <Header
           isLoggedIn={Boolean(me()?.username)}
           username={me()?.username ?? ''}
+          imagUrl={me()?.imageUrl ?? ''}
         />
       </div>
       <div class="flex-grow flex flex-col justify-center items-center">
         <div class="card min-w-[600px]">
           <div class="card-body">
-            <div class="flex flex-col gap-3">
-              <For each={messages()}>
+            <div class="flex flex-col gap-1">
+              <For
+                each={messages()}
+                fallback={<span class="text-gray-500">No messages yet...</span>}
+              >
                 {({ content, id, author, createdAt }) => (
                   <MessageInput
                     content={content}
