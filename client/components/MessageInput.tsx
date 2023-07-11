@@ -56,7 +56,7 @@ export const MessageInput = (props: Props) => {
     >
       <div class="flex flex-col w-full">
         <div
-          class={`flex items-center text-xs text-gray-500 m-1 && ${
+          class={`flex items-center gap-2 text-xs text-gray-500 m-1 && ${
             isOwnMessage() ? 'justify-end' : 'justify-start'
           }`}
         >
