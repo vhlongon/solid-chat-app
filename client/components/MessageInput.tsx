@@ -54,8 +54,12 @@ export const MessageInput = (props: Props) => {
         isOwnMessage() ? 'justify-end' : 'justify-start'
       }`}
     >
-      <div class="flex flex-col">
-        <div class="flex items-center">
+      <div class="flex flex-col w-full">
+        <div
+          class={`flex items-center text-xs text-gray-500 m-1 && ${
+            isOwnMessage() ? 'justify-end' : 'justify-start'
+          }`}
+        >
           <div class="avatar avatar-ring avatar-sm w-8">
             <img
               src={(props.author as UserFragmentFragment)?.imageUrl}
@@ -63,20 +67,19 @@ export const MessageInput = (props: Props) => {
             />
           </div>
           <input
-            class="input input-solid"
+            class="input input-solid flex-1 text-sm"
             value={value()}
             type="text"
             disabled={!isOwnMessage()}
             oninput={(e) => setValue(e.currentTarget.value)}
           />
         </div>
-
-        <div class="w-full flex justify-between items-center mt-0.5">
-          <span
-            class={`text-xs text-gray-500 m-1 && ${
-              isOwnMessage() ? 'text-right' : 'text-left'
-            }`}
-          >
+        <div
+          class={`w-full flex items-center mt-0.5 ${
+            isOwnMessage() ? 'justify-end' : 'justify-start'
+          }`}
+        >
+          <span class={`text-xs text-gray-500 m-1 &&`}>
             {formatDate(props.createdAt)}
           </span>
           <Show when={isOwnMessage()}>

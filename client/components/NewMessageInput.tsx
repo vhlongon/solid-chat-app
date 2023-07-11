@@ -7,6 +7,7 @@ export const NewMessageInput = (props: Props) => {
   const [newMessage, setNewMessage] = createSignal('');
 
   const addMessage = async () => {
+    if (!newMessage()) return;
     postMessage(
       {
         content: newMessage(),
