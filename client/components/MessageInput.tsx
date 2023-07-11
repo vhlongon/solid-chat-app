@@ -36,8 +36,6 @@ export const MessageInput = (props: Props) => {
     });
   };
 
-  console.log(props.createdAt);
-
   const formatDate = (date: string) => {
     const formattedTime = new Date(date).toLocaleString('en-GB', {
       day: '2-digit',
