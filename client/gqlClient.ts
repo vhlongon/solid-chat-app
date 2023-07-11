@@ -16,9 +16,7 @@ export const client = createClient({
     const authToken = sessionStorage.getItem('authToken');
     return {
       headers: {
-        Authorization: authToken
-          ? `Bearer ${sessionStorage.getItem('authToken')}`
-          : '',
+        Authorization: authToken ? `Bearer ${authToken}` : '',
       },
     };
   },
