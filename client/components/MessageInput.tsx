@@ -10,9 +10,9 @@ type Props = Message & {
 export const MessageInput = (props: Props) => {
   const [value, setValue] = createSignal(props.content);
 
-  const onEdit = (id: string) => async () => {
+  const onEdit = async () => {
     editMessage(
-      { id, content: value() },
+      { id: props.id, content: value() },
       {
         onError: props.onError,
         onSuccess: (data) => {
@@ -40,6 +40,12 @@ export const MessageInput = (props: Props) => {
     return formattedTime;
   };
 
+  const onKeyDown = async (e: KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      onEdit();
+    }
+  };
+
   return (
     <div class={`flex gap-2 items-center w-full ${props.isOwner ? 'justify-end' : 'justify-start'}`}>
       <div class="flex flex-col w-full">
@@ -65,6 +71,7 @@ export const MessageInput = (props: Props) => {
             type="text"
             disabled={!props.isOwner}
             oninput={(e) => setValue(e.currentTarget.value)}
+            onKeyDown={onKeyDown}
           />
         </div>
         <div class={`w-full flex items-center mt-0.5 ${props.isOwner ? 'justify-end' : 'justify-start'}`}>
@@ -74,7 +81,7 @@ export const MessageInput = (props: Props) => {
               <button
                 type="button"
                 class="btn btn-ghost btn-circle btn-xs"
-                onClick={onEdit(props.id)}
+                onClick={onEdit}
                 disabled={props.content === value()}
               >
                 <svg
