@@ -48,7 +48,12 @@ export const MessageInput = (props: Props) => {
             props.isOwner ? 'justify-end' : 'justify-start'
           }`}
         >
-          <div class="avatar avatar-ring avatar-sm w-8">
+          <div
+            class="avatar avatar-ring avatar-sm w-8"
+            classList={{
+              'opacity-5': !props.author.isLogged,
+            }}
+          >
             <img
               src={(props.author as UserFragmentFragment)?.imageUrl}
               alt={(props.author as UserFragmentFragment)?.username}
