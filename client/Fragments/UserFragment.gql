@@ -3,4 +3,5 @@ fragment UserFragment on User {
   username
   email
   imageUrl
+  isLogged
 }

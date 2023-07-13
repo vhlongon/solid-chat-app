@@ -1,0 +1,5 @@
+subscription Users {
+  users {
+    ...UserFragment
+  }
+}

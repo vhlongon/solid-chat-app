@@ -3,6 +3,7 @@ query GetMessages {
     id
     content
     createdAt
+    isOwner
     author {
       ...UserFragment
     }

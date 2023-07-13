@@ -39,6 +39,7 @@ export type Mutation = {
   authenticate: Maybe<AuthPayload>;
   createMessage: Message;
   deleteMessage: Scalars['Boolean']['output'];
+  logout: Maybe<Scalars['Boolean']['output']>;
   updateMessage: Message;
   verifyAuth: Maybe<User>;
 };
@@ -92,6 +93,7 @@ export type QueryUserArgs = {
 export type Subscription = {
   __typename?: 'Subscription';
   messages: Maybe<Array<Message>>;
+  users: Maybe<Array<User>>;
 };
 
 export type User = {
@@ -99,6 +101,7 @@ export type User = {
   email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   imageUrl: Scalars['String']['output'];
+  isLogged: Scalars['Boolean']['output'];
   messages: Maybe<Array<Maybe<Message>>>;
   username: Scalars['String']['output'];
 };
@@ -217,6 +220,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
   authenticate: Resolver<Maybe<ResolversTypes['AuthPayload']>, ParentType, ContextType, RequireFields<MutationAuthenticateArgs, 'accessCode'>>;
   createMessage: Resolver<ResolversTypes['Message'], ParentType, ContextType, RequireFields<MutationCreateMessageArgs, 'content'>>;
   deleteMessage: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteMessageArgs, 'id'>>;
+  logout: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   updateMessage: Resolver<ResolversTypes['Message'], ParentType, ContextType, RequireFields<MutationUpdateMessageArgs, 'content' | 'id'>>;
   verifyAuth: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationVerifyAuthArgs, 'token'>>;
 };
@@ -232,12 +236,14 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
 
 export type SubscriptionResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
   messages: SubscriptionResolver<Maybe<Array<ResolversTypes['Message']>>, "messages", ParentType, ContextType>;
+  users: SubscriptionResolver<Maybe<Array<ResolversTypes['User']>>, "users", ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   email: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   imageUrl: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  isLogged: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   messages: Resolver<Maybe<Array<Maybe<ResolversTypes['Message']>>>, ParentType, ContextType>;
   username: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

@@ -2,8 +2,8 @@ query GetUsers {
   users {
     id
     username
-    messages {
-      ...MessageFragment
-    }
+    isLogged
+    email
+    imageUrl
   }
 }
