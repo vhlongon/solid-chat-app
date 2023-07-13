@@ -2,6 +2,8 @@
 
 This is a simple chat application built using [Solid](https://solidproject.org/) and [Node.js](https://nodejs.org/). It allows users to create chat rooms and communicate with each other in real-time.
 
+![Chat](assets/chat.png)
+
 ## Tools Used
 
 - [Solid](https://www.solidjs.com/) is the front-end library used in this project.
