@@ -1,9 +1,9 @@
 import { GraphQLError } from 'graphql';
-import { Resolvers } from '../../../generated/resolvers-types';
+import { Message, Resolvers } from '../../../generated/resolvers-types';
 import { prisma } from '../../../prisma/db';
 import { createToken } from '../../auth';
 import { getAccessToken, getGithubUser } from '../../github';
-import { publishUsers } from '../../subscriptions';
+import { publishMessages, publishUsers } from '../../subscriptions';
 
 export const authenticate: Resolvers['Mutation']['authenticate'] = async (_, { accessCode }, { pubSub }) => {
   try {
@@ -44,6 +44,14 @@ export const authenticate: Resolvers['Mutation']['authenticate'] = async (_, { a
       pubSub,
       allUsers.map((user) => ({ ...user, isLogged: Boolean(user.isLogged) }))
     );
+
+    const messagesData = await prisma.message.findMany({
+      include: {
+        author: true,
+      },
+    });
+
+    publishMessages(pubSub, messagesData as unknown as Message[]);
 
     return {
       user: user,

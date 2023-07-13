@@ -1,7 +1,8 @@
 import { GraphQLError } from 'graphql';
+import { Message } from '../../../generated/graphql';
 import { Resolvers } from '../../../generated/resolvers-types';
 import { prisma } from '../../../prisma/db';
-import { publishUsers } from '../../subscriptions';
+import { publishMessages, publishUsers } from '../../subscriptions';
 
 export const logout: Resolvers['Mutation']['logout'] = async (_, args, { pubSub, userId }) => {
   if (!userId) {
@@ -24,6 +25,14 @@ export const logout: Resolvers['Mutation']['logout'] = async (_, args, { pubSub,
       pubSub,
       allUsers.map((user) => ({ ...user, isLogged: Boolean(user.isLogged) }))
     );
+
+    const messagesData = await prisma.message.findMany({
+      include: {
+        author: true,
+      },
+    });
+
+    publishMessages(pubSub, messagesData as unknown as Message[]);
 
     return true;
   } catch (error) {
