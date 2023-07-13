@@ -6,7 +6,7 @@ This is a simple chat application built using [Solid](https://solidproject.org/)
 
 - [Solid](https://www.solidjs.com/) is the front-end library used in this project.
 - [tailwindcss](https://tailwindcss.com/)
-- [ripple-ui](https://rippleui.com/)
+- [ripple-ui](https://www.ripple-ui.com/)
 - [urql](https://formidable.com/open-source/urql/)
 - graphql with ([graphql-yoga](https://the-guild.dev/graphql/yoga-server))
 - [Prisma](https://www.prisma.io/)
