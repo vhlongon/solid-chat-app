@@ -9,6 +9,7 @@ import { MessageInput } from '../components/MessageInput';
 import { NewMessageInput } from '../components/NewMessageInput';
 import { fetchMessages, getAuthVefication, getMe } from '../data';
 import { client } from '../gqlClient';
+import { UsersList } from './../components/UsersList';
 
 const [addedMessages, setAddedMessages] = createSignal<Message[]>([]);
 const [error, setError] = createSignal<Error | CombinedError | null>(null);
@@ -62,6 +63,7 @@ const Chat = () => {
                 )}
               </For>
             </div>
+            <UsersList onError={setError} />
             <div class="card-footer">
               <NewMessageInput onError={setError} />
             </div>

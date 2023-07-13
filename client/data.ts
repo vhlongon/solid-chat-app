@@ -1,3 +1,4 @@
+import { GetUsersDocument, GetUsersQuery } from './../generated/graphql';
 import { CombinedError } from '@urql/core';
 import {
   AuthenticateDocument,
@@ -181,6 +182,22 @@ export const getAuthVefication = async (
     }
 
     return data?.verifyAuth;
+  } catch (error) {
+    opts?.onError?.(error as Error | CombinedError);
+  }
+};
+
+export const getUsers = async (
+  opts?: Partial<OperationOptions<GetUsersQuery['users']>>
+) => {
+  try {
+    const { data, error } = await client.query(GetUsersDocument, {});
+
+    if (error) {
+      throw error;
+    }
+
+    return data?.users;
   } catch (error) {
     opts?.onError?.(error as Error | CombinedError);
   }
