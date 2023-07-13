@@ -4,11 +4,7 @@ import { Resolvers } from '../../../generated/resolvers-types';
 import { prisma } from '../../../prisma/db';
 import { publishMessages } from '../../subscriptions';
 
-export const updateMessage: Resolvers['Mutation']['updateMessage'] = async (
-  _,
-  { id, content },
-  { pubSub, userId }
-) => {
+export const updateMessage: Resolvers['Mutation']['updateMessage'] = async (_, { id, content }, { pubSub, userId }) => {
   if (!userId) {
     throw new GraphQLError('Not authenticated');
   }

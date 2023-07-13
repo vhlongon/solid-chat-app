@@ -38,13 +38,12 @@ useServer(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     subscribe: (args: any) => args.subscribe(args),
     onSubscribe: async (ctx, msg) => {
-      const { schema, execute, subscribe, contextFactory, parse, validate } =
-        yoga.getEnveloped({
-          ...ctx,
-          req: ctx.extra.request,
-          socket: ctx.extra.socket,
-          params: msg.payload,
-        });
+      const { schema, execute, subscribe, contextFactory, parse, validate } = yoga.getEnveloped({
+        ...ctx,
+        req: ctx.extra.request,
+        socket: ctx.extra.socket,
+        params: msg.payload,
+      });
 
       const args = {
         schema,
@@ -73,7 +72,5 @@ server.on('connection', (socket) => {
 const port = process.env.SERVER_PORT || 4000;
 
 server.listen(port, () => {
-  console.info(
-    chalk.cyan.bold(`Server is running on http://localhost:${port}/graphql 🚀`)
-  );
+  console.info(chalk.cyan.bold(`Server is running on http://localhost:${port}/graphql 🚀`));
 });

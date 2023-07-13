@@ -5,6 +5,7 @@ import { prisma } from '../../../prisma/db';
 export const UserModel: Resolvers['User'] = {
   email: (user) => user.email,
   id: (user) => user.id,
+  isLogged: (user) => Boolean(user.isLogged),
   messages: async (user) => {
     try {
       const messages = await prisma.message.findMany({

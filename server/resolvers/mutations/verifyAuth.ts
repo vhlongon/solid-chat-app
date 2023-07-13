@@ -3,10 +3,7 @@ import { Resolvers } from '../../../generated/resolvers-types';
 import { prisma } from '../../../prisma/db';
 import { getUserIdFromToken } from '../../auth';
 
-export const verifyAuth: Resolvers['Mutation']['verifyAuth'] = async (
-  _,
-  { token }
-) => {
+export const verifyAuth: Resolvers['Mutation']['verifyAuth'] = async (_, { token }) => {
   try {
     const userId = getUserIdFromToken(token);
 

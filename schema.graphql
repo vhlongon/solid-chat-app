@@ -4,6 +4,7 @@ type User {
   email: String!
   imageUrl: String!
   messages: [Message]
+  isLogged: Boolean!
 }
 
 type Message {
@@ -34,8 +35,10 @@ type Mutation {
   updateMessage(id: ID!, content: String!): Message!
   authenticate(accessCode: String!): AuthPayload
   verifyAuth(token: String!): User
+  logout: Boolean
 }
 
 type Subscription {
   messages: [Message!]
+  users: [User!]
 }

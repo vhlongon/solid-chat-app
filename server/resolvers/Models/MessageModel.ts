@@ -18,9 +18,7 @@ export const MessageModel: Resolvers['Message'] = {
       return { ...author, createdAt: new Date() };
     } catch (error) {
       console.log(error);
-      throw new GraphQLError(
-        `Could not retrieve author for message with id ${message.id}`
-      );
+      throw new GraphQLError(`Could not retrieve author for message with id ${message.id}`);
     }
   },
   isOwner: async (message) => {

@@ -15,9 +15,7 @@ export const getUserIdFromToken = (token: string) => {
     const { userId } = jwt.verify(token, secret) as JWTPayload;
     return userId;
   } catch (error) {
-    console.log(
-      chalk.red.bold(`Error decoding jwt: ${JSON.stringify(error, null, 2)}`)
-    );
+    console.log(chalk.red.bold(`Error decoding jwt: ${JSON.stringify(error, null, 2)}`));
     return null;
   }
 };

@@ -3,11 +3,9 @@ import { Resolvers } from '../../../generated/resolvers-types';
 import { prisma } from '../../../prisma/db';
 import { createToken } from '../../auth';
 import { getAccessToken, getGithubUser } from '../../github';
+import { publishUsers } from '../../subscriptions';
 
-export const authenticate: Resolvers['Mutation']['authenticate'] = async (
-  _,
-  { accessCode }
-) => {
+export const authenticate: Resolvers['Mutation']['authenticate'] = async (_, { accessCode }, { pubSub }) => {
   try {
     const accessToken = await getAccessToken(accessCode);
 
@@ -22,9 +20,12 @@ export const authenticate: Resolvers['Mutation']['authenticate'] = async (
     }
 
     const user =
-      (await prisma.user.findUnique({
+      (await prisma.user.update({
         where: {
           id: String(githubUser.id),
+        },
+        data: {
+          isLogged: true,
         },
       })) ||
       (await prisma.user.create({
@@ -33,8 +34,16 @@ export const authenticate: Resolvers['Mutation']['authenticate'] = async (
           id: String(githubUser.id),
           imageUrl: githubUser.avatar_url || 'https://via.placeholder.com/150',
           username: githubUser.login,
+          isLogged: true,
         },
       }));
+
+    const allUsers = await prisma.user.findMany({});
+
+    publishUsers(
+      pubSub,
+      allUsers.map((user) => ({ ...user, isLogged: Boolean(user.isLogged) }))
+    );
 
     return {
       user: user,
@@ -42,8 +51,6 @@ export const authenticate: Resolvers['Mutation']['authenticate'] = async (
     };
   } catch (error) {
     console.log(error);
-    throw new GraphQLError(
-      `Could not authenticate user ${JSON.stringify(error)}`
-    );
+    throw new GraphQLError(`Could not authenticate user ${JSON.stringify(error)}`);
   }
 };
