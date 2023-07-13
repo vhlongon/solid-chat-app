@@ -1,4 +1,3 @@
-import { GetUsersDocument, GetUsersQuery } from './../generated/graphql';
 import { CombinedError } from '@urql/core';
 import {
   AuthenticateDocument,
@@ -20,26 +19,25 @@ import {
   VerifyAuthDocument,
   VerifyAuthMutation,
 } from '../generated/graphql';
+import { GetUsersDocument, GetUsersQuery, LogoutDocument, LogoutMutation } from './../generated/graphql';
 import { client } from './gqlClient';
 import { OperationOptions } from './types';
 
-export const fetchMessages =
-  (opts?: Partial<OperationOptions<GetMessagesQuery['messages']>>) =>
-  async () => {
-    try {
-      const res = await client.query(GetMessagesDocument, {});
+export const getMessages = async (opts?: Partial<OperationOptions<GetMessagesQuery['messages']>>) => {
+  try {
+    const res = await client.query(GetMessagesDocument, {});
 
-      if (res.error) {
-        throw res.error;
-      }
-      if (res.data?.messages) {
-        opts?.onSuccess?.(res.data?.messages);
-      }
-      return res.data?.messages;
-    } catch (error) {
-      opts?.onError?.(error as Error | CombinedError);
+    if (res.error) {
+      throw res.error;
     }
-  };
+    if (res.data?.messages) {
+      opts?.onSuccess?.(res.data?.messages);
+    }
+    return res.data?.messages;
+  } catch (error) {
+    opts?.onError?.(error as Error | CombinedError);
+  }
+};
 
 export const postMessage = async (
   input: CreateMessageMutationVariables,
@@ -112,9 +110,7 @@ export const deleteMessage = async (
   }
 };
 
-export const getAuthUrl = async (
-  opts?: Partial<OperationOptions<GetAuthUrlQuery['authUrl']>>
-) => {
+export const getAuthUrl = async (opts?: Partial<OperationOptions<GetAuthUrlQuery['authUrl']>>) => {
   try {
     const { data, error } = await client.query(GetAuthUrlDocument, {});
 
@@ -153,20 +149,19 @@ export const authenticateUser = async (
   }
 };
 
-export const getMe =
-  (opts?: Partial<OperationOptions<MeQuery['me']>>) => async () => {
-    try {
-      const { data, error } = await client.query(MeDocument, {});
+export const getMe = (opts?: Partial<OperationOptions<MeQuery['me']>>) => async () => {
+  try {
+    const { data, error } = await client.query(MeDocument, {});
 
-      if (error) {
-        throw error;
-      }
-
-      return data?.me;
-    } catch (error) {
-      opts?.onError?.(error as Error | CombinedError);
+    if (error) {
+      throw error;
     }
-  };
+
+    return data?.me;
+  } catch (error) {
+    opts?.onError?.(error as Error | CombinedError);
+  }
+};
 
 export const getAuthVefication = async (
   token: string,
@@ -187,9 +182,7 @@ export const getAuthVefication = async (
   }
 };
 
-export const getUsers = async (
-  opts?: Partial<OperationOptions<GetUsersQuery['users']>>
-) => {
+export const getUsers = async (opts?: Partial<OperationOptions<GetUsersQuery['users']>>) => {
   try {
     const { data, error } = await client.query(GetUsersDocument, {});
 
@@ -198,6 +191,20 @@ export const getUsers = async (
     }
 
     return data?.users;
+  } catch (error) {
+    opts?.onError?.(error as Error | CombinedError);
+  }
+};
+
+export const logoutUser = async (opts?: Partial<OperationOptions<LogoutMutation['logout']>>) => {
+  try {
+    const { data, error } = await client.mutation(LogoutDocument, {});
+
+    if (error) {
+      throw error;
+    }
+
+    return data?.logout;
   } catch (error) {
     opts?.onError?.(error as Error | CombinedError);
   }

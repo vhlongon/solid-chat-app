@@ -1,22 +1,14 @@
 import { Show, createSignal } from 'solid-js';
-import {
-  GetMessagesQuery,
-  UserFragmentFragment,
-} from '../../generated/graphql';
+import { Message, UserFragmentFragment } from '../../generated/graphql';
 import { deleteMessage, editMessage } from '../data';
 import { OperationOptions } from '../types';
 
-type ExcludeNullAndUndefined<T> = Exclude<T, null | undefined>;
-
-type Props = ExcludeNullAndUndefined<GetMessagesQuery['messages']>[number] & {
+type Props = Message & {
   meId: string;
 } & Partial<OperationOptions>;
 
 export const MessageInput = (props: Props) => {
   const [value, setValue] = createSignal(props.content);
-
-  const isOwnMessage = () =>
-    (props.author as UserFragmentFragment).id === props.meId;
 
   const onEdit = (id: string) => async () => {
     editMessage(
@@ -49,15 +41,11 @@ export const MessageInput = (props: Props) => {
   };
 
   return (
-    <div
-      class={`flex gap-2 items-center w-full ${
-        isOwnMessage() ? 'justify-end' : 'justify-start'
-      }`}
-    >
+    <div class={`flex gap-2 items-center w-full ${props.isOwner ? 'justify-end' : 'justify-start'}`}>
       <div class="flex flex-col w-full">
         <div
           class={`flex items-center gap-2 text-xs text-gray-500 m-1 && ${
-            isOwnMessage() ? 'justify-end' : 'justify-start'
+            props.isOwner ? 'justify-end' : 'justify-start'
           }`}
         >
           <div class="avatar avatar-ring avatar-sm w-8">
@@ -70,19 +58,13 @@ export const MessageInput = (props: Props) => {
             class="input input-solid flex-1 text-sm"
             value={value()}
             type="text"
-            disabled={!isOwnMessage()}
+            disabled={!props.isOwner}
             oninput={(e) => setValue(e.currentTarget.value)}
           />
         </div>
-        <div
-          class={`w-full flex items-center mt-0.5 ${
-            isOwnMessage() ? 'justify-end' : 'justify-start'
-          }`}
-        >
-          <span class={`text-xs text-gray-500 m-1 &&`}>
-            {formatDate(props.createdAt)}
-          </span>
-          <Show when={isOwnMessage()}>
+        <div class={`w-full flex items-center mt-0.5 ${props.isOwner ? 'justify-end' : 'justify-start'}`}>
+          <span class={`text-xs text-gray-500 m-1 &&`}>{formatDate(props.createdAt)}</span>
+          <Show when={props.isOwner}>
             <div class="flex gap-2 items-center">
               <button
                 type="button"
@@ -110,7 +92,7 @@ export const MessageInput = (props: Props) => {
                 type="button"
                 class="btn btn-ghost btn-circle btn-xs"
                 onClick={onDelete(props.id)}
-                disabled={!isOwnMessage()}
+                disabled={!props.isOwner}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

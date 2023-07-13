@@ -1,15 +1,22 @@
+import { CombinedError } from '@urql/core';
 import { Show } from 'solid-js';
+import { logoutUser } from '../data';
 
 type HeaderProps = {
   username: string;
   imagUrl: string;
   isLoggedIn: boolean;
+  onError: (error: Error | CombinedError) => void;
 };
 
 export const Header = (props: HeaderProps) => {
-  const logout = () => {
-    sessionStorage.removeItem('authToken');
-    window.location.reload();
+  const logout = async () => {
+    const isLoggedOut = await logoutUser({ onError: props.onError });
+
+    if (isLoggedOut) {
+      sessionStorage.removeItem('authToken');
+      window.location.reload();
+    }
   };
 
   return (

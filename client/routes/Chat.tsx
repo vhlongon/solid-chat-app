@@ -1,38 +1,40 @@
 import { useNavigate } from '@solidjs/router';
 import { CombinedError } from '@urql/core';
-import { For, createEffect, createResource, createSignal } from 'solid-js';
+import { Show, createEffect, createResource, createSignal } from 'solid-js';
 import { pipe, subscribe } from 'wonka';
-import { Message, MessagesDocument } from '../../generated/graphql';
+import { Message, MessagesDocument, User, UsersDocument } from '../../generated/graphql';
 import { ErrrorBox } from '../components/ErrrorBox';
 import { Header } from '../components/Header';
-import { MessageInput } from '../components/MessageInput';
+import { MessagesList } from '../components/MessagesList';
 import { NewMessageInput } from '../components/NewMessageInput';
-import { fetchMessages, getAuthVefication, getMe } from '../data';
+import { getAuthVefication, getMe, getMessages, getUsers } from '../data';
 import { client } from '../gqlClient';
 import { UsersList } from './../components/UsersList';
 
-const [addedMessages, setAddedMessages] = createSignal<Message[]>([]);
+const [updatedMessages, setUpdatedMessages] = createSignal<Message[]>([]);
+const [updatedUsers, setUpdatedUsers] = createSignal<User[]>([]);
 const [error, setError] = createSignal<Error | CombinedError | null>(null);
 
 pipe(
   client.subscription(MessagesDocument, {}),
   subscribe((result) => {
     const messages = (result?.data?.messages ?? []) as Message[];
-    setAddedMessages(messages);
+    setUpdatedMessages(messages);
+  })
+);
+
+pipe(
+  client.subscription(UsersDocument, {}),
+  subscribe((result) => {
+    const users = (result?.data?.users ?? []) as User[];
+    setUpdatedUsers(users);
   })
 );
 
 const Chat = () => {
-  const [me] = createResource(getMe({ onError: setError }), {});
-  const [initialMessages] = createResource(
-    fetchMessages({
-      onError: setError,
-    })
-  );
-  console.log(addedMessages());
-  const messages = () => {
-    return addedMessages()?.length ? addedMessages() : initialMessages();
-  };
+  const [me] = createResource(getMe({ onError: setError }));
+  const [initialUsers] = createResource({ onError: setError }, getUsers);
+  const [initialMessages] = createResource({ onError: setError }, getMessages);
 
   return (
     <div class="flex flex-col h-screen">
@@ -41,29 +43,26 @@ const Chat = () => {
           isLoggedIn={Boolean(me()?.username)}
           username={me()?.username ?? ''}
           imagUrl={me()?.imageUrl ?? ''}
+          onError={setError}
         />
       </div>
       <div class="flex-grow flex flex-col justify-center items-center">
         <div class="card min-w-[600px]">
           <div class="card-body">
             <div class="flex flex-col gap-1">
-              <For
-                each={messages()}
-                fallback={<span class="text-gray-500">No messages yet...</span>}
-              >
-                {({ content, id, author, createdAt }) => (
-                  <MessageInput
-                    content={content}
-                    createdAt={createdAt}
-                    id={id}
-                    author={author}
-                    onError={setError}
-                    meId={me()?.id ?? ''}
-                  />
-                )}
-              </For>
+              <Show when={initialMessages()?.length} fallback="Loading messages...">
+                <MessagesList
+                  messages={((updatedMessages().length ? updatedMessages() : initialMessages()) || []) as Message[]}
+                  onError={setError}
+                  meId={me()?.id ?? ''}
+                />
+              </Show>
             </div>
-            <UsersList onError={setError} />
+
+            <Show when={initialUsers()?.length} fallback="Loading users...">
+              <UsersList users={(updatedUsers().length ? updatedUsers() : initialUsers()) || []} />
+            </Show>
+
             <div class="card-footer">
               <NewMessageInput onError={setError} />
             </div>
@@ -78,15 +77,15 @@ const Chat = () => {
 const ProtectedRouteChat = () => {
   const navigate = useNavigate();
 
-  const authToken = window.sessionStorage.getItem('authToken');
+  const [authToken] = createSignal(window.sessionStorage.getItem('authToken') || '');
 
-  if (!authToken) {
+  if (!authToken()) {
     navigate('/login');
     return null;
   }
 
   createEffect(async () => {
-    const res = await getAuthVefication(authToken, {
+    const res = await getAuthVefication(authToken(), {
       onError: setError,
     });
 

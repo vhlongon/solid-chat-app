@@ -43,9 +43,7 @@ export const Login = () => {
       <div class="card">
         <div class="card-body">
           <h2 class="card-header">Login with github to chat</h2>
-          <p class="text-content2">
-            It will only access your public information
-          </p>
+          <p class="text-content2">It will only access your public information</p>
           <div class="card-footer">
             <button onclick={onLogin} class="btn btn-secondary bt-lg">
               Login
