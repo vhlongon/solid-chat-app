@@ -9,11 +9,11 @@ export const updateMessage: Resolvers['Mutation']['updateMessage'] = async (
   { id, content },
   { pubSub, userId }
 ) => {
-  try {
-    if (!userId) {
-      throw new GraphQLError('Not authenticated');
-    }
+  if (!userId) {
+    throw new GraphQLError('Not authenticated');
+  }
 
+  try {
     const result = await prisma.message.update({
       where: {
         id,
