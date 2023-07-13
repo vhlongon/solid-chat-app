@@ -17,6 +17,7 @@ model User {
   imageUrl  String    @default("https://placehold.co/100x100/ffb800/FFF?text=user")
   createdAt DateTime  @default(now())
   messages  Message[] @relation("UserToMessage")
+  isLogged  Boolean?  @default(false)
 }
 
 model Message {
