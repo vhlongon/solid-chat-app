@@ -11,6 +11,8 @@
     "types": ["vite/client"],
     "noEmit": true,
     "isolatedModules": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "sourceMap": true
   }
 }
