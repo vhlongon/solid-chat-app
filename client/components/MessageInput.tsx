@@ -1,5 +1,5 @@
 import { Show, createSignal } from 'solid-js';
-import { Message, UserFragmentFragment } from '../../generated/graphql';
+import { Message } from '../../generated/graphql';
 import { deleteMessage, editMessage } from '../data';
 import { OperationOptions } from '../types';
 
@@ -46,23 +46,30 @@ export const MessageInput = (props: Props) => {
     }
   };
 
+  const containerClassList = () => ({
+    'justify-end': props.isOwner,
+    'justify-start': !props.isOwner,
+  });
+
   return (
-    <div class={`flex gap-2 items-center w-full ${props.isOwner ? 'justify-end' : 'justify-start'}`}>
+    <div class={`flex gap-2 items-center w-full`} classList={containerClassList()}>
       <div class="flex flex-col w-full">
-        <div
-          class={`flex items-center gap-2 text-xs text-gray-500 m-1 && ${
-            props.isOwner ? 'justify-end' : 'justify-start'
-          }`}
-        >
-          <div
-            class="avatar avatar-ring avatar-sm w-8"
-            classList={{
-              'opacity-5': !props.author.isLogged,
-            }}
-          >
+        <div class={`flex items-center gap-2 text-xs text-gray-500 m-1`} classList={containerClassList()}>
+          <div class="avatar avatar-ring avatar-sm w-8">
+            <span
+              class="dot absolute top-[-6px] left-[-6px]"
+              classList={{
+                'dot-success': props.author.isLogged,
+                'dot-error': !props.author.isLogged,
+              }}
+            ></span>
+
             <img
-              src={(props.author as UserFragmentFragment)?.imageUrl}
-              alt={(props.author as UserFragmentFragment)?.username}
+              classList={{
+                'opacity-50': !props.author.isLogged,
+              }}
+              src={props.author?.imageUrl}
+              alt={props.author?.username}
             />
           </div>
           <input
@@ -74,7 +81,7 @@ export const MessageInput = (props: Props) => {
             onKeyDown={onKeyDown}
           />
         </div>
-        <div class={`w-full flex items-center mt-0.5 ${props.isOwner ? 'justify-end' : 'justify-start'}`}>
+        <div class={`w-full flex items-center mt-0.5`} classList={containerClassList()}>
           <span class={`text-xs text-gray-500 m-1 &&`}>{formatDate(props.createdAt)}</span>
           <Show when={props.isOwner}>
             <div class="flex gap-2 items-center">
