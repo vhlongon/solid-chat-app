@@ -10,6 +10,7 @@ import { NewMessageInput } from '../components/NewMessageInput';
 import { getAuthVefication, getMe, getMessages, getUsers } from '../data';
 import { client } from '../gqlClient';
 import { UsersList } from './../components/UsersList';
+import { Spinner } from '../components/Spinner';
 
 const [updatedMessages, setUpdatedMessages] = createSignal<Message[]>([]);
 const [updatedUsers, setUpdatedUsers] = createSignal<User[]>([]);
@@ -36,6 +37,9 @@ const Chat = () => {
   const [initialUsers] = createResource({ onError: setError }, getUsers);
   const [initialMessages] = createResource({ onError: setError }, getMessages);
 
+  const messages = () => (updatedMessages().length ? updatedMessages() : (initialMessages() as Message[])) || [];
+  const users = () => (updatedUsers().length ? updatedUsers() : initialUsers()) || [];
+
   return (
     <div class="flex flex-col h-screen">
       <div class="h-14">
@@ -50,17 +54,13 @@ const Chat = () => {
         <div class="card min-w-[600px]">
           <div class="card-body">
             <div class="flex flex-col gap-1">
-              <Show when={initialMessages()?.length} fallback="Loading messages...">
-                <MessagesList
-                  messages={((updatedMessages().length ? updatedMessages() : initialMessages()) || []) as Message[]}
-                  onError={setError}
-                  meId={me()?.id ?? ''}
-                />
+              <Show when={!initialMessages.loading || messages().length} fallback={<Spinner>Loading messages</Spinner>}>
+                <MessagesList messages={messages()} onError={setError} meId={me()?.id ?? ''} />
               </Show>
             </div>
 
-            <Show when={initialUsers()?.length} fallback="Loading users...">
-              <UsersList users={(updatedUsers().length ? updatedUsers() : initialUsers()) || []} />
+            <Show when={!initialUsers.loading || users().length} fallback={<Spinner>Loading users</Spinner>}>
+              <UsersList users={users()} />
             </Show>
 
             <div class="card-footer">

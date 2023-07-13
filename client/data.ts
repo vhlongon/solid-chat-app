@@ -23,6 +23,8 @@ import { GetUsersDocument, GetUsersQuery, LogoutDocument, LogoutMutation } from 
 import { client } from './gqlClient';
 import { OperationOptions } from './types';
 
+export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const getMessages = async (opts?: Partial<OperationOptions<GetMessagesQuery['messages']>>) => {
   try {
     const res = await client.query(GetMessagesDocument, {});
