@@ -13,12 +13,22 @@
     "client": "vite",
     "lint": "eslint . --ext .ts",
     "tsc": "tsc --noEmit",
-    "dev": "concurrently \"yarn run codegen:watch\" \"yarn run server:watch\" \"yarn run client\""
+    "dev": "concurrently \"yarn run server:watch\" \"yarn run client\"",
+    "db:seed": "prisma db seed",
+    "db:reset": "prisma migrate reset --force",
+    "db:generate": "prisma generate",
+    "db:preview": "prisma studio",
+    "db:format": "prisma format",
+    "db:migrate": "prisma migrate dev --name init"
+  },
+  "prisma": {
+    "seed": "tsx ./prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^5.0.0",
     "@solidjs/router": "^0.8.2",
     "@urql/core": "^4.0.10",
     "graphql": "^16.7.1",
@@ -53,6 +63,7 @@
     "postcss": "^8.4.25",
     "prettier": "2.6.2",
     "prettier-eslint": "15.0.1",
+    "prisma": "^5.0.0",
     "solid-devtools": "^0.27.3",
     "tailwindcss": "^3.3.2",
     "tsx": "^3.12.7",

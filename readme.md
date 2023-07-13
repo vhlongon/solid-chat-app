@@ -9,6 +9,7 @@ This is a simple chat application built using [Solid](https://solidproject.org/)
 - [ripple-ui](https://rippleui.com/)
 - [urql](https://formidable.com/open-source/urql/)
 - graphql with ([graphql-yoga](https://the-guild.dev/graphql/yoga-server))
+- [Prisma](https://www.prisma.io/)
 
 ## How to Run Locally
 
@@ -31,7 +32,3 @@ To get a client ID and secret ID from a GitHub OAuth app, you need to follow the
 7. You can now use these values to authenticate your app with GitHub. Copy those and add them to your `.env` file.
 
 The chat session is held in memory only (no database is used). This means that if you restart the server, all chat messages will be lost.
-
-### TODO
-
-- [ ] Add a database to store chat messages

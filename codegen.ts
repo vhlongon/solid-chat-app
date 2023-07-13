@@ -13,6 +13,10 @@ const config: CodegenConfig = {
       config: {
         contextType: '../server/types#Context',
         avoidOptionals: true,
+        mappers: {
+          User: '.prisma/client#User as UserModel',
+          Message: '.prisma/client#Message as MessageModel',
+        },
       },
     },
   },

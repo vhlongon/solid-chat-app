@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { User as UserModel, Message as MessageModel } from '.prisma/client';
 import { Context } from '../server/types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -7,6 +8,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -89,7 +91,7 @@ export type QueryUserArgs = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  messages: Array<Maybe<Message>>;
+  messages: Maybe<Array<Message>>;
 };
 
 export type User = {
@@ -97,7 +99,7 @@ export type User = {
   email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   imageUrl: Scalars['String']['output'];
-  messages: Maybe<Array<Message>>;
+  messages: Maybe<Array<Maybe<Message>>>;
   username: Scalars['String']['output'];
 };
 
@@ -172,28 +174,28 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  AuthPayload: ResolverTypeWrapper<AuthPayload>;
+  AuthPayload: ResolverTypeWrapper<Omit<AuthPayload, 'user'> & { user: Maybe<ResolversTypes['User']> }>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
-  Message: ResolverTypeWrapper<Message>;
+  Message: ResolverTypeWrapper<MessageModel>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Subscription: ResolverTypeWrapper<{}>;
-  User: ResolverTypeWrapper<User>;
+  User: ResolverTypeWrapper<UserModel>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  AuthPayload: AuthPayload;
+  AuthPayload: Omit<AuthPayload, 'user'> & { user: Maybe<ResolversParentTypes['User']> };
   Boolean: Scalars['Boolean']['output'];
   ID: Scalars['ID']['output'];
-  Message: Message;
+  Message: MessageModel;
   Mutation: {};
   Query: {};
   String: Scalars['String']['output'];
   Subscription: {};
-  User: User;
+  User: UserModel;
 };
 
 export type AuthPayloadResolvers<ContextType = Context, ParentType extends ResolversParentTypes['AuthPayload'] = ResolversParentTypes['AuthPayload']> = {
@@ -229,14 +231,14 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
 };
 
 export type SubscriptionResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
-  messages: SubscriptionResolver<Array<Maybe<ResolversTypes['Message']>>, "messages", ParentType, ContextType>;
+  messages: SubscriptionResolver<Maybe<Array<ResolversTypes['Message']>>, "messages", ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   email: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   imageUrl: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  messages: Resolver<Maybe<Array<ResolversTypes['Message']>>, ParentType, ContextType>;
+  messages: Resolver<Maybe<Array<Maybe<ResolversTypes['Message']>>>, ParentType, ContextType>;
   username: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };

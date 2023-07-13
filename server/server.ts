@@ -20,7 +20,6 @@ const yoga = createYoga({
 
     return {
       pubSub,
-
       userId: getUserIdFromToken(auth),
     };
   },
@@ -34,7 +33,9 @@ const wss = new WebSocketServer({
 
 useServer(
   {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     execute: (args: any) => args.execute(args),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     subscribe: (args: any) => args.subscribe(args),
     onSubscribe: async (ctx, msg) => {
       const { schema, execute, subscribe, contextFactory, parse, validate } =

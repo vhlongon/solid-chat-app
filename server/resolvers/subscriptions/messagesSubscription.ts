@@ -4,6 +4,10 @@ import { subscribeToMessages } from '../../subscriptions';
 export const messagesSubscription: Resolvers['Subscription']['messages'] = {
   subscribe: (_, __, { pubSub }) => subscribeToMessages(pubSub),
   resolve: (payload: { messages: Message[] }) => {
-    return payload.messages;
+    return payload.messages.map((message) => ({
+      ...message,
+      authorId: message.author.id,
+      createdAt: new Date(message.createdAt),
+    }));
   },
 };

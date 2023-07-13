@@ -1,9 +1,10 @@
 import { GraphQLError } from 'graphql';
+import { Message } from '../../../generated/graphql';
 import { Resolvers } from '../../../generated/resolvers-types';
-import { messagesData } from '../../data';
+import { prisma } from '../../../prisma/db';
 import { publishMessages } from '../../subscriptions';
 
-export const deleteMessage: Resolvers['Mutation']['deleteMessage'] = (
+export const deleteMessage: Resolvers['Mutation']['deleteMessage'] = async (
   _,
   { id },
   { pubSub, userId }
@@ -12,15 +13,31 @@ export const deleteMessage: Resolvers['Mutation']['deleteMessage'] = (
     throw new GraphQLError('Not authenticated');
   }
 
-  const message = messagesData.find((message) => message.id === id);
-  const isOwner = message?.author.id === userId;
+  try {
+    const result = await prisma.message.delete({
+      where: {
+        id,
+        AND: {
+          authorId: userId,
+        },
+      },
+    });
 
-  if (isOwner) {
-    messagesData.splice(messagesData.indexOf(message), 1);
+    if (!result) {
+      throw new GraphQLError('Cannot delete message');
+    }
 
-    publishMessages(pubSub, messagesData);
+    const messagesData = await prisma.message.findMany({
+      include: {
+        author: true,
+      },
+    });
+
+    publishMessages(pubSub, messagesData as unknown as Message[]);
+
     return true;
+  } catch (error) {
+    console.log(error);
+    throw new GraphQLError(`Fail to delete message with id ${id}`);
   }
-
-  throw new GraphQLError('Cannot delete message');
 };

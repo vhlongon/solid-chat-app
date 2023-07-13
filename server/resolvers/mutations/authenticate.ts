@@ -1,9 +1,8 @@
 import { GraphQLError } from 'graphql';
 import { Resolvers } from '../../../generated/resolvers-types';
+import { prisma } from '../../../prisma/db';
 import { createToken } from '../../auth';
-import { usersData } from '../../data';
 import { getAccessToken, getGithubUser } from '../../github';
-import { createUser } from '../../helpers';
 
 export const authenticate: Resolvers['Mutation']['authenticate'] = async (
   _,
@@ -22,29 +21,29 @@ export const authenticate: Resolvers['Mutation']['authenticate'] = async (
       throw new Error('Failed to fetch github user');
     }
 
-    const userInData = usersData.find(
-      (user) => user.id === String(githubUser.id)
-    );
-
-    let user;
-
-    if (!userInData) {
-      user = createUser({
-        id: String(githubUser.id),
-        username: githubUser.login,
-        email: githubUser.email,
-        imageUrl: githubUser.avatar_url,
-      });
-      usersData.push(user);
-    } else {
-      user = userInData;
-    }
+    const user =
+      (await prisma.user.findUnique({
+        where: {
+          id: String(githubUser.id),
+        },
+      })) ||
+      (await prisma.user.create({
+        data: {
+          email: githubUser.email,
+          id: String(githubUser.id),
+          imageUrl: githubUser.avatar_url || 'https://via.placeholder.com/150',
+          username: githubUser.login,
+        },
+      }));
 
     return {
-      user,
-      token: createToken(user.id),
+      user: user,
+      token: createToken(user?.id),
     };
   } catch (error) {
-    throw new GraphQLError(JSON.stringify(error));
+    console.log(error);
+    throw new GraphQLError(
+      `Could not authenticate user ${JSON.stringify(error)}`
+    );
   }
 };
