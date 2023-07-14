@@ -2,8 +2,9 @@ import { createSignal } from 'solid-js';
 import { postMessage } from '../data';
 import { OperationOptions } from '../types';
 
-type Props = Partial<OperationOptions>;
-export const NewMessageInput = (props: Props) => {
+type NewMessageInputProps = Partial<OperationOptions>;
+
+export const NewMessageInput = (props: NewMessageInputProps) => {
   const [newMessage, setNewMessage] = createSignal('');
   const addMessage = async () => {
     postMessage(

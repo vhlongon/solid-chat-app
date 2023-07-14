@@ -1,10 +1,10 @@
 import { Show } from 'solid-js';
 
-type Props = {
+type ErrorBoxProps = {
   message?: string;
 };
 
-export const ErrrorBox = (props: Props) => {
+export const ErrrorBox = (props: ErrorBoxProps) => {
   return (
     <Show when={props.message}>
       <div class="alert alert-error">
