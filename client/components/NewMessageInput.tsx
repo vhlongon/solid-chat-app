@@ -7,9 +7,13 @@ type NewMessageInputProps = Partial<OperationOptions>;
 export const NewMessageInput = (props: NewMessageInputProps) => {
   const [newMessage, setNewMessage] = createSignal('');
   const addMessage = async () => {
+    if (!newMessage().trim().length) {
+      return;
+    }
+
     postMessage(
       {
-        content: newMessage(),
+        content: newMessage().trim(),
       },
       {
         onSuccess: (data) => {
