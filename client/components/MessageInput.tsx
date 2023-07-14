@@ -84,7 +84,7 @@ export const MessageInput = (props: Props) => {
         <div class={`w-full flex items-center mt-0.5`} classList={containerClassList()}>
           <span class={`text-xs text-gray-500 m-1 &&`}>{formatDate(props.createdAt)}</span>
           <Show when={props.isOwner}>
-            <div class="flex gap-2 items-center">
+            <div class="flex items-center">
               <button
                 type="button"
                 class="btn btn-ghost btn-circle btn-xs"
