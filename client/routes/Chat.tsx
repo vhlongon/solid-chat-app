@@ -7,10 +7,10 @@ import { ErrrorBox } from '../components/ErrrorBox';
 import { Header } from '../components/Header';
 import { MessagesList } from '../components/MessagesList';
 import { NewMessageInput } from '../components/NewMessageInput';
+import { Spinner } from '../components/Spinner';
 import { getAuthVefication, getMe, getMessages, getUsers } from '../data';
 import { client } from '../gqlClient';
 import { UsersList } from './../components/UsersList';
-import { Spinner } from '../components/Spinner';
 
 const [updatedMessages, setUpdatedMessages] = createSignal<Message[]>([]);
 const [updatedUsers, setUpdatedUsers] = createSignal<User[]>([]);
