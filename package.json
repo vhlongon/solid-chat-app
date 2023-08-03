@@ -30,6 +30,7 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.0.0",
+    "@solid-primitives/storage": "^2.0.0",
     "@solidjs/router": "^0.8.2",
     "@urql/core": "^4.0.10",
     "graphql": "^16.7.1",

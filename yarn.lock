@@ -1699,6 +1699,13 @@
   dependencies:
     "@solid-primitives/utils" "^6.2.0"
 
+"@solid-primitives/storage@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@solid-primitives/storage/-/storage-2.0.0.tgz#48be0998876163f0706d3ecfb593f6333244d56f"
+  integrity sha512-64etR/or0A7jUtsg4gG9jhV+QN5hNrQrQl0/Ss9Qcbl4Rc//dznN/s9V1OEBiQCNRrsSM91vAQuq3XXBbilUwA==
+  dependencies:
+    "@solid-primitives/utils" "^6.2.0"
+
 "@solid-primitives/styles@^0.0.108":
   version "0.0.108"
   resolved "https://registry.yarnpkg.com/@solid-primitives/styles/-/styles-0.0.108.tgz#ce54255e7a633df6d0d38b0512561d078bc87aeb"

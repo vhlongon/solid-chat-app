@@ -1,6 +1,7 @@
 import { CombinedError } from '@urql/core';
 import { Show } from 'solid-js';
 import { logoutUser } from '../data';
+import { setAuthToken } from '../storage';
 
 type HeaderProps = {
   username: string;
@@ -14,7 +15,7 @@ export const Header = (props: HeaderProps) => {
     const isLoggedOut = await logoutUser({ onError: props.onError });
 
     if (isLoggedOut) {
-      sessionStorage.removeItem('authToken');
+      setAuthToken(null);
       window.location.reload();
     }
   };

@@ -3,6 +3,7 @@ import { CombinedError } from '@urql/core';
 import { createEffect, createSignal } from 'solid-js';
 import { ErrrorBox } from '../components/ErrrorBox';
 import { authenticateUser, getAuthUrl } from '../data';
+import { setAuthToken } from '../storage';
 
 export const Login = () => {
   const [errors, setErrors] = createSignal<Error | CombinedError | null>(null);
@@ -16,7 +17,7 @@ export const Login = () => {
         onError: setErrors,
       }).then((res) => {
         if (res?.token) {
-          window.sessionStorage.setItem('authToken', res.token);
+          setAuthToken(res.token);
           navigate('/');
         }
       });
@@ -37,8 +38,6 @@ export const Login = () => {
     }
 
     window.location.href = authUrl;
-
-    navigate(authUrl);
   };
   return (
     <div class="h-screen w-screen flex justify-center items-center">

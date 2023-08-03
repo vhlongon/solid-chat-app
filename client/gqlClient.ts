@@ -1,5 +1,6 @@
-import { createClient, cacheExchange, fetchExchange, subscriptionExchange } from '@urql/core';
-import { createClient as createWSClient, SubscribePayload } from 'graphql-ws';
+import { cacheExchange, createClient, fetchExchange, subscriptionExchange } from '@urql/core';
+import { SubscribePayload, createClient as createWSClient } from 'graphql-ws';
+import { authToken } from './storage';
 
 const wsClient = createWSClient({
   url: import.meta.env.VITE_GRAPHQL_ENDPOINT_WS,
@@ -8,10 +9,10 @@ const wsClient = createWSClient({
 export const client = createClient({
   url: import.meta.env.VITE_GRAPHQL_ENDPOINT,
   fetchOptions: () => {
-    const authToken = sessionStorage.getItem('authToken');
+    const token = authToken();
     return {
       headers: {
-        Authorization: authToken ? `Bearer ${authToken}` : '',
+        Authorization: token ? `Bearer ${token}` : '',
       },
     };
   },

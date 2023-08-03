@@ -10,6 +10,7 @@ import { NewMessageInput } from '../components/NewMessageInput';
 import { Spinner } from '../components/Spinner';
 import { getAuthVefication, getMe, getMessages, getUsers } from '../data';
 import { client } from '../gqlClient';
+import { authToken } from '../storage';
 import { UsersList } from './../components/UsersList';
 
 const [updatedMessages, setUpdatedMessages] = createSignal<Message[]>([]);
@@ -76,14 +77,13 @@ const Chat = () => {
 
 const ProtectedRouteChat = () => {
   const navigate = useNavigate();
-
-  const [authToken] = createSignal(window.sessionStorage.getItem('authToken') || '');
+  const token = authToken();
 
   createEffect(() => {
-    if (!authToken()) {
+    if (!token) {
       navigate('/login');
     } else {
-      getAuthVefication(authToken(), {
+      getAuthVefication(token, {
         onError: setError,
       }).then((res) => {
         if (!res) {
