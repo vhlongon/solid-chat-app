@@ -9,10 +9,10 @@ export const Spinner: Component<SpinnerProps> = (props) => {
     <div class="flex gap-2">
       <span class={`text-secondary text-xs`}>{props.children}</span>
       <div class="spinner-wave spinner-secondary spinner-sm">
-        <div class="spinner-wave-dot"></div>
-        <div class="spinner-wave-dot"></div>
-        <div class="spinner-wave-dot"></div>
-        <div class="spinner-wave-dot"></div>
+        <div class="spinner-wave-dot" />
+        <div class="spinner-wave-dot" />
+        <div class="spinner-wave-dot" />
+        <div class="spinner-wave-dot" />
       </div>
     </div>
   );

@@ -40,11 +40,11 @@ export const NewMessageInput = (props: NewMessageInputProps) => {
       <textarea
         rows={1}
         value={newMessage()}
-        oninput={(e) => setNewMessage(e.currentTarget.value)}
+        onInput={(e) => setNewMessage(e.currentTarget.value)}
         class="textarea textarea-ghost-primary max-w-none"
         onKeyDown={onKeyDown}
       />
-      <button type="button" class="btn btn-primary" disabled={!newMessage().length} onclick={onClick}>
+      <button type="button" class="btn btn-primary" disabled={!newMessage().length} onClick={onClick}>
         Send
       </button>
     </div>

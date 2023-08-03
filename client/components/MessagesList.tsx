@@ -14,7 +14,7 @@ export const MessagesList = (props: MessageListProps) => {
       {({ content, id, author, createdAt }) => {
         return (
           <MessageInput
-            content={content}
+            initialContent={content}
             createdAt={createdAt}
             id={id}
             author={author}

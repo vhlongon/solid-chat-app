@@ -27,7 +27,7 @@ export function MessageButtons(props: MessageButtonsProps) {
           <button
             type="button"
             class="btn btn-ghost btn-circle btn-xs"
-            onClick={props.onEdit}
+            onClick={() => props.onEdit()}
             disabled={props.disabled}
           >
             <svg
@@ -49,7 +49,7 @@ export function MessageButtons(props: MessageButtonsProps) {
           <button
             type="button"
             class="btn btn-ghost btn-circle btn-xs"
-            onClick={props.onDelete}
+            onClick={() => props.onDelete()}
             disabled={!props.isOwner}
           >
             <svg

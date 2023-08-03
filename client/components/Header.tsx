@@ -33,7 +33,7 @@ export const Header = (props: HeaderProps) => {
           </div>
         </div>
         <div class="navbar-end">
-          <button type="button" class="btn btn-error btn-sm" onclick={logout}>
+          <button type="button" class="btn btn-error btn-sm" onClick={logout}>
             logout
           </button>
         </div>

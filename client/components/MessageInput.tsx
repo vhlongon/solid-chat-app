@@ -4,12 +4,13 @@ import { deleteMessage, editMessage } from '../data';
 import { OperationOptions } from '../types';
 import { MessageButtons } from './MessageButtons';
 
-type MessageInputProps = Message & {
+type MessageInputProps = Omit<Message, 'content'> & {
+  initialContent: string;
   meId: string;
 } & Partial<OperationOptions>;
 
 export const MessageInput = (props: MessageInputProps) => {
-  const [value, setValue] = createSignal(props.content);
+  const [value, setValue] = createSignal(props.initialContent);
 
   const onEdit = async () => {
     editMessage(
@@ -51,7 +52,7 @@ export const MessageInput = (props: MessageInputProps) => {
                 'dot-success': props.author.isLogged,
                 'dot-error': !props.author.isLogged,
               }}
-            ></span>
+            />
 
             <img
               classList={{
@@ -66,13 +67,13 @@ export const MessageInput = (props: MessageInputProps) => {
             value={value()}
             type="text"
             disabled={!props.isOwner}
-            oninput={(e) => setValue(e.currentTarget.value)}
+            onInput={(e) => setValue(e.currentTarget.value)}
             onKeyDown={onKeyDown}
           />
         </div>
         <div class={`w-full flex items-center mt-0.5`} classList={containerClassList()}>
           <MessageButtons
-            disabled={value() === props.content}
+            disabled={value() === props.initialContent}
             isOwner={props.isOwner}
             onEdit={onEdit}
             createdAt={props.createdAt}

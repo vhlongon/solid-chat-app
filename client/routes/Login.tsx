@@ -10,19 +10,21 @@ export const Login = () => {
 
   const [searchParams] = useSearchParams<{ code: string }>();
 
-  createEffect(async () => {
-    const accessToken = searchParams.code;
-
+  const handleAccessToken = (accessToken: string) => {
     if (accessToken) {
-      const res = await authenticateUser(accessToken, {
+      authenticateUser(accessToken, {
         onError: setErrors,
+      }).then((res) => {
+        if (res?.token) {
+          window.sessionStorage.setItem('authToken', res.token);
+          navigate('/');
+        }
       });
-
-      if (res?.token) {
-        window.sessionStorage.setItem('authToken', res.token);
-        navigate('/');
-      }
     }
+  };
+
+  createEffect(() => {
+    handleAccessToken(searchParams.code);
   });
 
   const onLogin = async () => {
@@ -45,7 +47,7 @@ export const Login = () => {
           <h2 class="card-header">Login with github to chat</h2>
           <p class="text-content2">It will only access your public information</p>
           <div class="card-footer">
-            <button onclick={onLogin} class="btn btn-secondary bt-lg">
+            <button onClick={onLogin} class="btn btn-secondary bt-lg">
               Login
             </button>
           </div>

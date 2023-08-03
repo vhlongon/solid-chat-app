@@ -79,22 +79,25 @@ const ProtectedRouteChat = () => {
 
   const [authToken] = createSignal(window.sessionStorage.getItem('authToken') || '');
 
-  if (!authToken()) {
-    navigate('/login');
-    return null;
-  }
-
-  createEffect(async () => {
-    const res = await getAuthVefication(authToken(), {
-      onError: setError,
-    });
-
-    if (!res) {
+  createEffect(() => {
+    if (!authToken()) {
       navigate('/login');
+    } else {
+      getAuthVefication(authToken(), {
+        onError: setError,
+      }).then((res) => {
+        if (!res) {
+          navigate('/login');
+        }
+      });
     }
   });
 
-  return <Chat />;
+  return (
+    <Show when={authToken()}>
+      <Chat />
+    </Show>
+  );
 };
 
 export default ProtectedRouteChat;
