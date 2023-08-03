@@ -7,19 +7,17 @@ This is a simple chat application built using [Solid](https://solidproject.org/)
 ## Tools Used
 
 - [Solid](https://www.solidjs.com/) is the front-end library used in this project.
-- [tailwindcss](https://tailwindcss.com/)
-- [ripple-ui](https://www.ripple-ui.com/)
-- [urql](https://formidable.com/open-source/urql/)
-- graphql with ([graphql-yoga](https://the-guild.dev/graphql/yoga-server))
-- [Prisma](https://www.prisma.io/)
+- [tailwindcss](https://tailwindcss.com/) - utility-first CSS framework
+- [ripple-ui](https://www.ripple-ui.com/) - UI components for tailwind
+- [urql](https://formidable.com/open-source/urql/) - GraphQL client
+- ([graphql-yoga](https://the-guild.dev/graphql/yoga-server)) - GraphQL server
+- [Prisma](https://www.prisma.io/) - ORM for Node.js
 
 ## How to Run Locally
 
 1. run `yarn` to install all dependencies
 2. configure the necessary environment variables in a `.env` file (see below for instructions on how to get a client ID and secret ID from a GitHub OAuth app)
-3. run `yarn dev` to start the development server
-
-This will start the server on and the client on watch model, as well as watch for changes for graphql files.
+3. run `yarn dev` to start the development server and client
 
 ### Github oauth
 
@@ -32,5 +30,3 @@ To get a client ID and secret ID from a GitHub OAuth app, you need to follow the
 5. Once you have filled out the form, click on the "Register application" button.
 6. On the next page, you will see your client ID and client secret. Make sure to keep these values secret, as they are used to authenticate your app with GitHub.
 7. You can now use these values to authenticate your app with GitHub. Copy those and add them to your `.env` file.
-
-The chat session is held in memory only (no database is used). This means that if you restart the server, all chat messages will be lost.
