@@ -51,8 +51,8 @@ const Chat = () => {
           onError={setError}
         />
       </div>
-      <div class="flex-grow flex flex-col justify-center items-center">
-        <div class="card min-w-[600px]">
+      <div class="flex-grow flex flex-col justify-center items-center px-4">
+        <div class="card" style={{ 'min-width': 'min(100%, 600px)' }}>
           <div class="card-body">
             <div class="flex flex-col gap-1">
               <Show when={!initialMessages.loading || messages().length} fallback={<Spinner>Loading messages</Spinner>}>
