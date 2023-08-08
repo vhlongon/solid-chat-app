@@ -2,9 +2,9 @@ import { useNavigate, useSearchParams } from '@solidjs/router';
 import { CombinedError } from '@urql/core';
 import { Show, createEffect, createSignal } from 'solid-js';
 import { ErrrorBox } from '../components/ErrrorBox';
+import { Spinner } from '../components/Spinner';
 import { authenticateUser, getAuthUrl } from '../data';
 import { setAuthToken } from '../storage';
-import { Spinner } from '../components/Spinner';
 
 export const Login = () => {
   const [errors, setErrors] = createSignal<Error | CombinedError | null>(null);
@@ -33,7 +33,10 @@ export const Login = () => {
   };
 
   createEffect(() => {
-    handleAccessToken(searchParams.code);
+    const code = new URLSearchParams(window.location.search).get('code');
+    console.log('🚀 ~ code:', code);
+
+    handleAccessToken(code ?? '');
   });
 
   const onLogin = async () => {

@@ -78,7 +78,6 @@ const Chat = () => {
 const ProtectedRouteChat = () => {
   const navigate = useNavigate();
   const token = authToken();
-  console.log('🚀 ~ token:', token);
 
   createEffect(() => {
     if (!token) {
