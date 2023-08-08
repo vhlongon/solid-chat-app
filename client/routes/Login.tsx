@@ -33,10 +33,7 @@ export const Login = () => {
   };
 
   createEffect(() => {
-    const code = new URLSearchParams(window.location.search).get('code');
-    console.log('🚀 ~ code:', code);
-
-    handleAccessToken(code ?? '');
+    handleAccessToken(searchParams.code);
   });
 
   const onLogin = async () => {
