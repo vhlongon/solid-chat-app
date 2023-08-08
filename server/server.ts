@@ -69,7 +69,7 @@ server.on('connection', (socket) => {
   server.once('close', () => sockets.delete(socket));
 });
 
-const port = process.env.SERVER_PORT || 4000;
+const port = process.env.PORT || 4000;
 
 server.listen(port, () => {
   console.info(chalk.cyan.bold(`Server is running on http://localhost:${port}/graphql 🚀`));
