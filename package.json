@@ -14,6 +14,7 @@
     "server": "dotenv -- tsx ./server/server.ts",
     "server:watch": "dotenv -- tsx watch ./server/server.ts",
     "client": "vite",
+    "client:preview": "vite preview --port 3000",
     "build": "vite build",
     "start": "yarn run server",
     "lint": "eslint . --ext .ts,.tsx",
