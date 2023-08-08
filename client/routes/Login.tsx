@@ -48,7 +48,7 @@ export const Login = () => {
     window.location.href = authUrl;
   };
   return (
-    <div class="h-screen w-screen flex justify-center items-center">
+    <div class="min-h-[100dvh] w-screen flex justify-center items-center">
       <Show when={!loading()} fallback={<Spinner>Loading chat</Spinner>}>
         <div class="card">
           <div class="card-body">

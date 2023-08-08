@@ -42,7 +42,7 @@ const Chat = () => {
   const users = () => (updatedUsers().length ? updatedUsers() : initialUsers()) || [];
 
   return (
-    <div class="flex flex-col h-screen">
+    <div class="flex flex-col min-h-[100dvh]">
       <div class="h-14">
         <Header
           isLoggedIn={Boolean(me()?.username)}
