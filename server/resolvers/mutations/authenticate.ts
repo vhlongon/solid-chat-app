@@ -19,24 +19,30 @@ export const authenticate: Resolvers['Mutation']['authenticate'] = async (_, { a
       throw new Error('Failed to fetch github user');
     }
 
-    const user =
-      (await prisma.user.update({
-        where: {
-          id: String(githubUser.id),
-        },
-        data: {
-          isLogged: true,
-        },
-      })) ||
-      (await prisma.user.create({
-        data: {
-          email: githubUser.email,
-          id: String(githubUser.id),
-          imageUrl: githubUser.avatar_url || 'https://via.placeholder.com/150',
-          username: githubUser.login,
-          isLogged: true,
-        },
-      }));
+    const hasUser = await prisma.user.findUnique({
+      where: {
+        id: String(githubUser.id),
+      },
+    });
+
+    const user = hasUser
+      ? await prisma.user.update({
+          where: {
+            id: String(githubUser.id),
+          },
+          data: {
+            isLogged: true,
+          },
+        })
+      : await prisma.user.create({
+          data: {
+            email: githubUser.email,
+            id: String(githubUser.id),
+            imageUrl: githubUser.avatar_url || 'https://via.placeholder.com/150',
+            username: githubUser.login,
+            isLogged: true,
+          },
+        });
 
     const allUsers = await prisma.user.findMany({});
 
