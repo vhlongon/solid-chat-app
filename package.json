@@ -11,6 +11,8 @@
     "server": "dotenv -- tsx ./server/server.ts",
     "server:watch": "dotenv -- tsx watch ./server/server.ts",
     "client": "vite",
+    "client:build": "vite build",
+    "start": "yarn run client:build && yarn run server",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "tsc": "tsc --noEmit",
