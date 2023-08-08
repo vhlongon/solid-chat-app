@@ -9,6 +9,7 @@ export const App = () => {
     <Routes>
       <Route path="/" component={Chat} />
       <Route path="/login" component={Login} />
+      <Route path="*" component={Login} />
     </Routes>
   );
 };
